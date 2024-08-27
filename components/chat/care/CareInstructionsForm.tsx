@@ -33,7 +33,7 @@ export default function WoodnotesCareInstructionsForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       rugTypes: Object.entries(detectedRugTypes)
-        .filter(([, value]) => value === true)
+        .filter(([_, value]) => value === true)
         .map(([key]) => key),
     },
   });
