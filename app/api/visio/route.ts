@@ -46,7 +46,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     const detectedRugTypes = JSON.parse(
-      response.choices[0].message.content || "{}"
+      response.choices[0].message.content || "{}",
     );
     return Response.json(detectedRugTypes);
   } catch (error) {

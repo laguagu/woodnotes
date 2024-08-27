@@ -23,13 +23,9 @@ const FormSchema = z.object({
   }),
 });
 
-interface ExtendedCareInstructionsFormProps extends CareInstructionsFormProps {
-  detectedRugTypes: Record<RugTypes, boolean>;
-}
-
 export default function WoodnotesCareInstructionsForm({
   detectedRugTypes,
-}: ExtendedCareInstructionsFormProps) {
+}: CareInstructionsFormProps) {
   const router = useRouter();
   const [clickedOk, setClickedOk] = useState(false);
 
@@ -37,7 +33,7 @@ export default function WoodnotesCareInstructionsForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       rugTypes: Object.entries(detectedRugTypes)
-        .filter(([, value]) => value)
+        .filter(([, value]) => value === true)
         .map(([key]) => key),
     },
   });
@@ -110,7 +106,7 @@ export default function WoodnotesCareInstructionsForm({
                                 const updatedValue = checked
                                   ? [...field.value, key]
                                   : field.value?.filter(
-                                      (value) => value !== key
+                                      (value) => value !== key,
                                     );
                                 form.setValue("rugTypes", updatedValue, {
                                   shouldValidate: true,

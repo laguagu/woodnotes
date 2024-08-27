@@ -1,11 +1,11 @@
-export type RugTypes = 
-  "paperYarnRugs" |
-  "handKnottedRugs" |
-  "tuftedRugs" |
-  "outdoorRugs" |
-  "duetto" |
-  "piccolo" |
-  "minore";
+export type RugTypes =
+  | "paperYarnRugs"
+  | "handKnottedRugs"
+  | "tuftedRugs"
+  | "outdoorRugs"
+  | "duetto"
+  | "piccolo"
+  | "minore";
 
 export type DetectedRugTypes = {
   [K in RugTypes]: boolean;

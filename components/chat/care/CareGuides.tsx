@@ -36,7 +36,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         {careGuides.map((careGuide, index) => {
           const rugType = careGuide.rugType;
           const multiPhotosRug = rugPhotos.find(
-            (photo) => photo.name === rugType
+            (photo) => photo.name === rugType,
           );
 
           return (
@@ -77,7 +77,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                                 </p>
                               </CarouselItem>
                             );
-                          }
+                          },
                         )}
                     </CarouselContent>
                     <CarouselPrevious />

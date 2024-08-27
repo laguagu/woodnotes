@@ -8,7 +8,8 @@ import Error from "@/components/chat/error";
 import { DetectedRugTypes } from "@/lib/definitions";
 
 export default function Page() {
-  const [detectedRugTypes, setDetectedRugTypes] = useState<DetectedRugTypes | null>(null);
+  const [detectedRugTypes, setDetectedRugTypes] =
+    useState<DetectedRugTypes | null>(null);
   const [isDetectingRug, setIsDetectingRug] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -17,11 +18,11 @@ export default function Page() {
     setIsDetectingRug(true);
     setError(null);
     try {
-      console.log('Detecting rug types');
-      
+      console.log("Detecting rug types");
+
       const rugTypes = await detectRugType(image_url);
       setDetectedRugTypes(rugTypes);
-      console.log('Detected rug types:', rugTypes);
+      console.log("Detected rug types:", rugTypes);
       setIsDetectingRug(false);
     } catch (error) {
       setError((error as Error).message);

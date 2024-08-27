@@ -6,8 +6,10 @@ import CareGuides from "@/components/chat/care/CareGuides";
 
 function Page() {
   const searchParams = useSearchParams();
-  const rugTypesParam = searchParams.get('rugTypes');
-  const rugTypes = rugTypesParam ? rugTypesParam.split(',') as RugTypes[] : [];
+  const rugTypesParam = searchParams.get("rugTypes");
+  const rugTypes = rugTypesParam
+    ? (rugTypesParam.split(",") as RugTypes[])
+    : [];
 
   const careGuides = rugTypes.map((rugType) => {
     return {
