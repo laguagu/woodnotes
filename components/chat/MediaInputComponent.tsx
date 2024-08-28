@@ -40,13 +40,13 @@ export default function WoodnotesMediaInputComponent({
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]; // Poimitaan ensimmäinen tiedosto
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader(); // Luodaan uusi FileReader-objekti
       reader.onloadend = () => {
-        setImageURL(reader.result as string);
+        setImageURL(reader.result as string); // Asetetaan base64-muotoinen URL-osoite tilaan
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Luetaan tiedosto base64-muotoiseksi URL-osoitteeksi
     }
   };
 
