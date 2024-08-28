@@ -12,11 +12,47 @@ const openai = new OpenAI({
 export const dynamic = "force-dynamic";
 
 type DetailLevel = "low" | "high" | "auto";
+type GPT4oVersion = "gpt-4o" | "gpt-4o-2024-08-06" | "gpt-4o-2024-05-13";
+
+interface PricingInfo {
+  inputPrice: number;
+  outputPrice: number;
+}
+
+const pricingInfo: Record<GPT4oVersion, PricingInfo> = {
+  "gpt-4o": { inputPrice: 5.0, outputPrice: 15.0 },
+  "gpt-4o-2024-08-06": { inputPrice: 2.5, outputPrice: 10.0 },
+  "gpt-4o-2024-05-13": { inputPrice: 5.0, outputPrice: 15.0 },
+};
+
+function calculateTokens(
+  width: number,
+  height: number,
+  detailLevel: DetailLevel
+): number {
+  if (detailLevel === "low" || detailLevel === "auto") {
+    return 85; // Kiinteä kustannus low-tilassa
+  }
+
+  // High-tilan laskenta
+  const scaledWidth = Math.min(2048, width);
+  const scaledHeight = Math.min(2048, height);
+  const shortestSide = Math.min(scaledWidth, scaledHeight);
+  const scale = 768 / shortestSide;
+  const finalWidth = Math.ceil(scaledWidth * scale);
+  const finalHeight = Math.ceil(scaledHeight * scale);
+
+  const tilesX = Math.ceil(finalWidth / 512);
+  const tilesY = Math.ceil(finalHeight / 512);
+  const totalTiles = tilesX * tilesY;
+
+  return 170 * totalTiles + 85;
+}
 
 async function processImage(
   input: Buffer | string,
   detailLevel: DetailLevel,
-  saveProcessedImage: boolean = false,
+  saveProcessedImage: boolean = false
 ): Promise<string> {
   let buffer: Buffer;
 
@@ -71,34 +107,44 @@ async function processImage(
       process.cwd(),
       "public",
       "processed_images",
-      filename,
+      filename
     );
     await fs.writeFile(savePath, resizedImage);
     console.log(`Processed image saved to: ${savePath}`);
   }
 
-  return `data:image/jpeg;base64,${resizedImage.toString("base64")}`;
+  const base64 = `data:image/jpeg;base64,${resizedImage.toString("base64")}`;
+
+  return base64;
 }
 
 export async function POST(req: Request, res: Response) {
   try {
-    const { image_url, detailLevel, saveProcessedImage } = await req.json();
-    console.log("REq tiedot", detailLevel, saveProcessedImage);
+    const {
+      image_url,
+      detailLevel = "high",
+      saveProcessedImage = false,
+      modelVersion = "gpt-4o-2024-08-06",
+    } = await req.json();
 
     if (!image_url || typeof image_url !== "string") {
       return NextResponse.json(
         { message: "Invalid or missing image_url in request body" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const processedImageBase64 = await processImage(
       image_url,
       detailLevel as DetailLevel,
-      saveProcessedImage,
+      saveProcessedImage
     );
+
+    // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
+    // const pricing = pricingInfo[modelVersion as GPT4oVersion];
+
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-2024-08-06",
       messages: [
         {
           role: "user",
@@ -125,8 +171,27 @@ export async function POST(req: Request, res: Response) {
     });
 
     const detectedRugTypes = JSON.parse(
-      response.choices[0].message.content || "{}",
+      response.choices[0].message.content || "{}"
     );
+
+    // const outputTokens = response.usage?.completion_tokens || 0;
+    // const totalInputTokens = inputTokens + (response.usage?.prompt_tokens || 0);
+
+    // const inputCost = (totalInputTokens / 1000000) * pricing.inputPrice;
+    // const outputCost = (outputTokens / 1000000) * pricing.outputPrice;
+    // const totalCost = inputCost + outputCost;
+
+    // console.log(`
+    //   Cost estimation:
+    //   Model: ${modelVersion}
+    //   Detail level: ${detailLevel}
+    //   Image size: ${width}x${height}
+    //   Input tokens: ${totalInputTokens}
+    //   Output tokens: ${outputTokens}
+    //   Input cost: $${inputCost.toFixed(6)}
+    //   Output cost: $${outputCost.toFixed(6)}
+    //   Total estimated cost: $${totalCost.toFixed(6)}
+    // `);
 
     return NextResponse.json(detectedRugTypes);
   } catch (error) {
