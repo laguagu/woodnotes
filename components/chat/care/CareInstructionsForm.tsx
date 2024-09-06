@@ -19,7 +19,7 @@ import { RugTypes, CareInstructionsFormProps } from "@/lib/definitions";
 
 const FormSchema = z.object({
   rugTypes: z.array(z.string()).refine((value) => value.length > 0, {
-    message: "You must select at least one rug type.",
+    message: "Please select at least one rug type.",
   }),
 });
 
@@ -41,10 +41,10 @@ export default function WoodnotesCareInstructionsForm({
   const toastDisplayed = useRef(false);
   useEffect(() => {
     if (!toastDisplayed.current) {
-      toast.info("Notification", {
+      toast.info("Confirm Rug Types", {
         description:
-          "Please confirm the rug types suggested by the AI. If you are unsure, please contact support@woodnotes.fi",
-        duration: Infinity,
+          "Please verify the rug types suggested by AI. If unsure, contact support@woodnotes.fi",
+        duration: 10000,
         action: {
           label: "OK",
           onClick: () => setClickedOk(true),
@@ -73,31 +73,29 @@ export default function WoodnotesCareInstructionsForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 align-middle p-4 mb-2 mt-1 rounded-lg border-2 shadow-xl bg-zinc-50 min-w-[339px] sm:min-w-[375px]"
+          className="space-y-6 p-6 rounded-lg shadow-sm bg-gray-50 w-full max-w-md"
         >
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Detected Rug Types</h2>
+            <FormDescription className="text-sm text-gray-600">
+              Please confirm or adjust the detected rug types.
+            </FormDescription>
+          </div>
           <FormField
             control={form.control}
             name="rugTypes"
             render={() => (
               <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">
-                    Detected Rug Types
-                  </FormLabel>
-                  <FormDescription className="flex align-middle text-left text-black">
-                    Confirm or adjust the detected rug types.
-                  </FormDescription>
-                </div>
-                {(Object.keys(detectedRugTypes) as RugTypes[]).map((key) => (
-                  <FormField
-                    key={key}
-                    control={form.control}
-                    name="rugTypes"
-                    render={({ field }) => {
-                      return (
+                <div className="space-y-2">
+                  {(Object.keys(detectedRugTypes) as RugTypes[]).map((key) => (
+                    <FormField
+                      key={key}
+                      control={form.control}
+                      name="rugTypes"
+                      render={({ field }) => (
                         <FormItem
                           key={key}
-                          className="flex flex-row items-center space-x-3 space-y-0"
+                          className="flex items-center space-x-3"
                         >
                           <FormControl>
                             <Checkbox
@@ -114,19 +112,23 @@ export default function WoodnotesCareInstructionsForm({
                               }}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">
+                          <FormLabel className="text-sm font-normal">
                             {rugTypeLabels[key]}
                           </FormLabel>
                         </FormItem>
-                      );
-                    }}
-                  />
-                ))}
-                <FormMessage />
+                      )}
+                    />
+                  ))}
+                </div>
+                <FormMessage className="text-sm text-red-500 mt-2" />
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={!clickedOk}>
+          <Button
+            type="submit"
+            disabled={!clickedOk}
+            className="w-full bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+          >
             Get Care Instructions
           </Button>
         </form>

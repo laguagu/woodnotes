@@ -1,7 +1,7 @@
 import { DetectedRugTypes } from "@/lib/definitions";
 
 export async function detectRugType(
-  image_url: string
+  image_url: string,
 ): Promise<DetectedRugTypes> {
   const response = await fetch("/api/visio/", {
     method: "POST",
@@ -17,7 +17,7 @@ export async function detectRugType(
   if (!response.ok) {
     const errorResponse = await response.json();
     throw new Error(
-      errorResponse.message || `HTTP error! Status: ${response.status}`
+      errorResponse.message || `HTTP error! Status: ${response.status}`,
     );
   }
 

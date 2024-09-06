@@ -1,51 +1,62 @@
-import { CardContent, Card } from "@/components/ui/card";
+"use client";
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const MotionCard = motion(Card);
+
+const stepData = [
+  { step: "Step 1", description: "Take a picture" },
+  { step: "Step 2", description: "Review and adjust" },
+  { step: "Step 3", description: "Explore care instructions" },
+];
 
 export function Cards() {
   return (
-    <div className="flex flex-col items-center px-4 md:px-6 py-4 md:py-8 ">
-      <div className="flex flex-col gap-4 max-w-2xl w-full mx-auto">
-        {/* Kortit täällä */}
-        <Card className="hoverEffect shadow-md bg-white bg-opacity-60 group border-2 border-black border-opacity-35 divide-x-8">
-          <CardContent className="flex flex-col items-center justify-center p-4">
-            <h3 className="text-xl md:text-2xl font-semibold break-words text-gray-700 textColor">
-              Step 1
-            </h3>
-            <span className="text-medium"> Take a picture</span>
-            {/* <p className="text-gray-500 dark:text-gray-400 mt-2">This is the content of the first card.</p> */}
-          </CardContent>
-        </Card>
-        <Card className="hoverEffect shadow-md bg-white bg-opacity-60 group border-2 border-black border-opacity-35">
-          <CardContent className="flex flex-col items-center justify-center p-4">
-            <h3 className="text-xl md:text-2xl font-semibold break-words text-gray-700 textColor">
-              Step 2
-            </h3>
-            <span className="text-medium">Review and adjust</span>
-          </CardContent>
-        </Card>
-        <Card className="hoverEffect shadow-md bg-white bg-opacity-60 group border-2 border-black border-opacity-35">
-          <CardContent className="flex flex-col items-center justify-center p-4">
-            <h3 className="text-xl md:text-2xl font-semibold break-words text-gray-700 textColor">
-              Step 3
-            </h3>
-            <span className="text-medium">Explore care instructions</span>
-          </CardContent>
-        </Card>
-        <Link href={"/care"}>
-          <Card className="hoverEffect shadow-lg outline outline-2 bg-white  hover:cursor-pointer  hover:underline group ">
-            <CardContent className="flex flex-col items-center justify-center p-4">
-              <h3 className="text-xl md:text-2xl font-semibold text-gray-700 textColor">
+    <div className="flex flex-col items-center px-4 md:px-6 py-8 md:py-12 bg-zinc-50">
+      <div className="max-w-md w-full mx-auto space-y-4">
+        {stepData.map((item, index) => (
+          <MotionCard
+            key={index}
+            className="overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+            whileHover={{ scale: 1.01 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <CardContent className="flex flex-col items-center text-center p-6">
+              <span className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 text-gray-800 font-semibold text-lg mb-4">
+                {index + 1}
+              </span>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                {item.step}
+              </h3>
+              <p className="text-gray-600">{item.description}</p>
+            </CardContent>
+          </MotionCard>
+        ))}
+        <Link href="/care" className="block">
+          <MotionCard
+            className="overflow-hidden border border-gray-300 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
+            whileHover={{ scale: 1.01 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <CardContent className="flex flex-col items-center text-center p-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 Get started
               </h3>
               <Button
-                className="mt-2 font-semibold bg-gray-800 bg-opacity-90"
                 size="lg"
+                className="bg-gray-800 text-white hover:bg-gray-700 w-full"
               >
                 Click here
               </Button>
             </CardContent>
-          </Card>
+          </MotionCard>
         </Link>
       </div>
     </div>

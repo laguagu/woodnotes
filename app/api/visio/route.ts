@@ -28,7 +28,7 @@ const pricingInfo: Record<GPT4oVersion, PricingInfo> = {
 function calculateTokens(
   width: number,
   height: number,
-  detailLevel: DetailLevel
+  detailLevel: DetailLevel,
 ): number {
   if (detailLevel === "low" || detailLevel === "auto") {
     return 85; // Kiinteä kustannus low-tilassa
@@ -52,7 +52,7 @@ function calculateTokens(
 async function processImage(
   input: Buffer | string,
   detailLevel: DetailLevel,
-  saveProcessedImage: boolean = false
+  saveProcessedImage: boolean = false,
 ): Promise<string> {
   let buffer: Buffer;
 
@@ -107,7 +107,7 @@ async function processImage(
       process.cwd(),
       "public",
       "processed_images",
-      filename
+      filename,
     );
     await fs.writeFile(savePath, resizedImage);
     console.log(`Processed image saved to: ${savePath}`);
@@ -130,14 +130,14 @@ export async function POST(req: Request, res: Response) {
     if (!image_url || typeof image_url !== "string") {
       return NextResponse.json(
         { message: "Invalid or missing image_url in request body" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const processedImageBase64 = await processImage(
       image_url,
       detailLevel as DetailLevel,
-      saveProcessedImage
+      saveProcessedImage,
     );
 
     // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
@@ -171,7 +171,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     const detectedRugTypes = JSON.parse(
-      response.choices[0].message.content || "{}"
+      response.choices[0].message.content || "{}",
     );
 
     // const outputTokens = response.usage?.completion_tokens || 0;

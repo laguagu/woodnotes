@@ -1,11 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DocumentPlusIcon,
-  CameraIcon,
-  CheckIcon,
-} from "@heroicons/react/24/outline";
+import { Camera, Upload, Check, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import Webcam from "react-webcam";
 import { CameraSkeleton } from "@/components/chat/skeletons";
@@ -40,13 +36,13 @@ export default function WoodnotesMediaInputComponent({
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const file = event.target.files?.[0]; // Poimitaan ensimmäinen tiedosto
+    const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader(); // Luodaan uusi FileReader-objekti
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImageURL(reader.result as string); // Asetetaan base64-muotoinen URL-osoite tilaan
+        setImageURL(reader.result as string);
       };
-      reader.readAsDataURL(file); // Luetaan tiedosto base64-muotoiseksi URL-osoitteeksi
+      reader.readAsDataURL(file);
     }
   };
 
@@ -81,60 +77,54 @@ export default function WoodnotesMediaInputComponent({
 
   const toggleCamera = () => {
     setIsCameraActive(!isCameraActive);
-    if (!isCameraActive) {
-      setLoadingCamera(true);
-    } else {
-      setLoadingCamera(false);
-    }
+    setLoadingCamera(!isCameraActive);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 md:my-6 my-3 relative">
+    <div className="flex flex-col items-center justify-center space-y-6 my-8 max-w-md mx-auto">
       {!isCameraActive && !imageURL && (
-        <div className="md:mb-2 border-white flex flex-col md:flex-row items-center justify-center max-w-md mx-auto p-4 bg-zinc-200 border-2 rounded-xl">
+        <div className="text-center p-6 bg-gray-50 rounded-lg shadow-sm">
           <Image
-            alt="instructions step 1"
-            src={"/steps/step-1.webp"}
-            height={175}
-            width={175}
-            className="aspect-square rounded-xl object-cover shadow-lg mx-4 my-2"
+            alt="Capture your Woodnotes rug"
+            src="/steps/step-1.webp"
+            height={200}
+            width={200}
+            className="mx-auto mb-4 rounded-lg object-cover"
           />
-          <p className="text-start break-words max-w-xs md:max-w-sm">
-            Capture a clear photo of your Woodnotes rug. Ensure the photo is
-            well-lit and the entire rug is visible in the shot.
+          <p className="text-gray-700">
+            Capture a clear photo of your Woodnotes rug. Ensure good lighting
+            and that the entire rug is visible.
           </p>
         </div>
       )}
+
       {loadingCamera && !imageURL && <CameraSkeleton />}
+
       {!imageURL && (
-        <div className="flex gap-3">
-          {!isCameraActive && (
-            <>
-              <Button
-                onClick={toggleCamera}
-                className="font-semibold"
-                variant={"outline"}
-              >
-                Activate Camera
-                <CameraIcon className="w-5 ml-2" />
-              </Button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-                accept="image/*"
-              />
-              <Button
-                variant={"outline"}
-                onClick={() => fileInputRef.current?.click()}
-                className="font-semibold"
-              >
-                <DocumentPlusIcon className="w-5 mr-1 flex-shrink-0 right-0" />
-                Upload Image
-              </Button>
-            </>
-          )}
+        <div className="flex flex-col sm:flex-row gap-4 w-full">
+          <Button
+            onClick={toggleCamera}
+            variant="outline"
+            className="w-full sm:w-1/2 h-auto py-3 px-4 flex items-center justify-center"
+          >
+            <Camera className="w-5 h-5 mr-2" />
+            <span>{isCameraActive ? "Deactivate" : "Activate"} Camera</span>
+          </Button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+          <Button
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full sm:w-1/2 h-auto py-3 px-4 flex items-center justify-center"
+          >
+            <Upload className="w-5 h-5 mr-2" />
+            <span>Upload Image</span>
+          </Button>
         </div>
       )}
       {isCameraActive && !imageURL && (
@@ -144,80 +134,51 @@ export default function WoodnotesMediaInputComponent({
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
-            className={`rounded-xl ${isWebcamReady ? "" : "hidden"}`}
+            className={`rounded-lg ${isWebcamReady ? "" : "hidden"}`}
             onUserMedia={handleCameraStart}
             onUserMediaError={handleCameraError}
           />
-          <div className="flex gap-3">
-            {!loadingCamera && isWebcamReady && (
-              <Button
-                onClick={captureImage}
-                className="font-semibold"
-                variant={"outline"}
-              >
-                <CameraIcon className="w-5 mr-1 flex-shrink-0 right-0" />
-                Take Photo
-              </Button>
-            )}
-            {!loadingCamera && (
-              <>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                  accept="image/*"
-                />
-                <Button
-                  variant={"outline"}
-                  onClick={() => fileInputRef.current?.click()}
-                  className="font-semibold"
-                >
-                  <DocumentPlusIcon className="w-5 mr-1 flex-shrink-0 right-0" />
-                  Upload Image
-                </Button>
-              </>
-            )}
-          </div>
+          {isWebcamReady && (
+            <Button onClick={captureImage} variant="outline" className="w-40">
+              Take Photo
+              <Camera className="w-4 h-4 ml-2" />
+            </Button>
+          )}
         </>
       )}
+
       {imageURL && (
-        <div className="bg-gray-200 md:p-8 p-5 justify-center items-center ml-3 rounded-xl border-white border-2 shadow-md border-opacity-80">
-          <div className="text-center justify-center">
-            <Image
-              src={imageURL}
-              alt="Preview"
-              className="rounded-md object-contain md:max-w-lg md:max-h-none max-h-96 w-full h-auto"
-              width={640}
-              height={360}
-            />
-            <div className="space-y-2 mt-2 xs:space-x-0 sm:space-x-3 md:space-x-3">
-              <Button
-                variant={"outline"}
-                className="font-semibold"
-                onClick={() => sendImageToAI(imageURL)}
-              >
-                <CheckIcon className="w-5 mr-1 flex-shrink-0 right-0" />
-                Detect Rug Type
-              </Button>
-              <Button
-                onClick={resetStates}
-                variant={"outline"}
-                className="font-semibold"
-              >
-                <CameraIcon className="w-5 mr-1 flex-shrink-0 right-0" />
-                Take New Picture
-              </Button>
-            </div>
+        <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+          <Image
+            src={imageURL}
+            alt="Preview"
+            className="rounded-lg object-contain max-h-96 w-full"
+            width={640}
+            height={360}
+          />
+          <div className="flex justify-center gap-4 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => sendImageToAI(imageURL)}
+              className="w-40"
+            >
+              Detect Rug Type
+              <Check className="w-4 h-4 ml-2" />
+            </Button>
+            <Button variant="outline" onClick={resetStates} className="w-40">
+              New Picture
+              <RefreshCw className="w-4 h-4 ml-2" />
+            </Button>
           </div>
         </div>
       )}
+
       {cameraError && !imageURL && (
-        <div className="text-center text-lg">
+        <div className="text-center text-red-600">
           <p>
             Error: {cameraError}
             <br />
-            Please plug in camera or continue by uploading from files.
+            Please use a device with a camera or upload an image.
           </p>
         </div>
       )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -15,80 +15,124 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Play } from "lucide-react";
 
 function formatRugTypeName(name: RugTypes): string {
-  // Muuntaa camelCase-muotoisen merkkijonon sanoiksi
-  const words = name.replace(/([a-z])([A-Z])/g, "$1 $2");
-
-  // Muuntaa jokaisen sanan ensimmäisen kirjaimen isoksi
-  const titleCase = words.replace(/\b(\w)/g, (char) => char.toUpperCase());
-
-  return titleCase;
+  return name
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (str) => str.toUpperCase())
+    .trim();
 }
 
-export default function CareGuides({ careGuides }: CareGuidesProps) {
+const VideoPlayer = ({ videoId }: { videoId: string }) => {
   return (
-    <div className="md:p-4 ">
-      <div className="overflow-y-auto p-4 bg-zinc-50 bg-opacity-90 shadow rounded-lg outline outline-white">
-        <p className="text-gray-700 mb-4 text-lg tracking-tight border-b">
-          Click on each rug type to view the specific care instructions.
-        </p>
-        {careGuides.map((careGuide, index) => {
-          const rugType = careGuide.rugType;
-          const multiPhotosRug = rugPhotos.find(
-            (photo) => photo.name === rugType,
-          );
+    <div className="relative aspect-video">
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute top-0 left-0 w-full h-full rounded-lg"
+      />
+    </div>
+  );
+};
 
-          return (
-            <Accordion key={index} type="single" collapsible className="mb-4">
-              <AccordionItem value={rugType}>
-                <AccordionTrigger
-                  className={`bg-zinc-100 relative cursor-pointer px-6 py-3 rounded-lg text-lg font-semibold group `}
-                >
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 rounded-lg transition-all duration-300 ease-in-out"></div>
-                  {formatRugTypeName(rugType)}
-                </AccordionTrigger>
-                <AccordionContent className="px-6 py-4 rounded-lg bg-zinc-100 bg-opacity-50 my-2 shadow-md hover:shadow-lg transition-shadow duration-200 border-2">
-                  <Carousel>
-                    <CarouselContent>
-                      {careGuide.instructions &&
-                        Object.entries(careGuide.instructions).map(
-                          ([key, instruction], idx) => {
-                            const photo = multiPhotosRug?.photos[idx];
-                            return (
-                              <CarouselItem
-                                key={idx}
-                                className="flex flex-col justify-around"
-                              >
-                                {photo && (
-                                  <div className="flex flex-col items-center">
-                                    <Image
-                                      alt="Rug care instructions"
-                                      src={photo.imageSrc}
-                                      height={400}
-                                      width={400}
-                                      className="aspect-[1/1] rounded-xl mb-4 cursor-pointer shadow-md object-cover border-2 border-white"
-                                      title="Rug care instructions"
-                                    />
-                                  </div>
-                                )}
-                                <p className="text-gray-800 md:text-lg text-left tracking-tight border-b">
-                                  {instruction}
-                                </p>
-                              </CarouselItem>
-                            );
-                          },
-                        )}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                  </Carousel>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          );
-        })}
+export default function CareGuides({ careGuides }: CareGuidesProps) {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-light text-gray-800 mb-6 text-center">
+        Care Instructions
+      </h1>
+
+      {/* Enhanced Video Section */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-light text-gray-700 mb-4 text-center">
+          Watch Our Care Guide Video
+        </h2>
+        <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
+          <DialogTrigger asChild>
+            <div className="relative aspect-video cursor-pointer group">
+              <Image
+                src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                alt="Video thumbnail"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300">
+                <Play className="w-16 h-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+              </div>
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-3xl">
+            <VideoPlayer videoId={videoId} />
+          </DialogContent>
+        </Dialog>
       </div>
+
+      <p className="text-gray-600 mb-8 text-center">
+        Select a rug type below to view its specific care instructions.
+      </p>
+
+      {careGuides.map((careGuide, index) => {
+        const rugType = careGuide.rugType;
+        const multiPhotosRug = rugPhotos.find(
+          (photo) => photo.name === rugType,
+        );
+
+        return (
+          <Accordion key={index} type="single" collapsible className="mb-6">
+            <AccordionItem value={rugType} className="border-none">
+              <AccordionTrigger className="bg-gray-100 hover:bg-gray-200 px-6 py-4 rounded-lg text-lg font-medium text-gray-800 transition-all">
+                {formatRugTypeName(rugType)}
+              </AccordionTrigger>
+              <AccordionContent className="pt-4">
+                <Card className="border-none shadow-sm">
+                  <CardContent className="p-0">
+                    <Carousel className="w-full max-w-xl mx-auto">
+                      <CarouselContent>
+                        {careGuide.instructions &&
+                          Object.entries(careGuide.instructions).map(
+                            ([key, instruction], idx) => {
+                              const photo = multiPhotosRug?.photos[idx];
+                              return (
+                                <CarouselItem key={idx}>
+                                  <div className="p-4">
+                                    {photo && (
+                                      <div className="mb-4">
+                                        <Image
+                                          alt="Rug care instruction"
+                                          src={photo.imageSrc}
+                                          height={400}
+                                          width={400}
+                                          className="rounded-lg shadow-sm object-cover w-full h-64"
+                                        />
+                                      </div>
+                                    )}
+                                    <p className="text-gray-700 text-lg leading-relaxed">
+                                      {instruction}
+                                    </p>
+                                  </div>
+                                </CarouselItem>
+                              );
+                            },
+                          )}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-2" />
+                      <CarouselNext className="right-2" />
+                    </Carousel>
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        );
+      })}
     </div>
   );
 }
