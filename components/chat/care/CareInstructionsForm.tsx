@@ -1,6 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -12,10 +9,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { CareInstructionsFormProps, RugTypes } from "@/lib/definitions";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
-import { RugTypes, CareInstructionsFormProps } from "@/lib/definitions";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const FormSchema = z.object({
   rugTypes: z.array(z.string()).refine((value) => value.length > 0, {
@@ -59,13 +59,12 @@ export default function WoodnotesCareInstructionsForm({
   }
 
   const rugTypeLabels: Record<RugTypes, string> = {
-    paperYarnRugs: "Paper Yarn Rugs",
-    handKnottedRugs: "Hand Knotted Rugs",
-    tuftedRugs: "Tufted Rugs",
-    outdoorRugs: "Outdoor Rugs",
-    duetto: "Duetto",
-    piccolo: "Piccolo",
-    minore: "Minore",
+    paperYarnRugs: "Paper Yarn Rug",
+    handKnottedRugs: "Hand Knotted Rug",
+    tuftedRugs: "Tufted Rug",
+    outdoorRugs: "Outdoor Rug",
+    cottonPaperYarnRugs: "Cotton Paper Yarn Rug",
+    woolPaperYarnRugs: "Wool Paper Yarn Rug",
   };
 
   return (

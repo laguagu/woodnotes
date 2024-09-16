@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import { detectRugType } from "@/lib/actions";
-import WoodnotesCareInstructionsForm from "@/components/chat/care/CareInstructionsForm";
-import { FormSkeleton } from "@/components/chat/skeletons";
 import WoodnotesMediaInputComponent from "@/components/chat/MediaInputComponent";
+import WoodnotesCareInstructionsForm from "@/components/chat/care/CareInstructionsForm";
 import Error from "@/components/chat/error";
+import { FormSkeleton } from "@/components/chat/skeletons";
+import { detectRugType } from "@/lib/actions";
 import { DetectedRugTypes } from "@/lib/definitions";
+import { useState } from "react";
 
 export default function Page() {
   const [detectedRugTypes, setDetectedRugTypes] =
@@ -20,6 +20,7 @@ export default function Page() {
     try {
       console.log("Detecting rug types");
       const rugTypes = await detectRugType(image_url);
+      console.log("Detected rug types:", rugTypes);
       setDetectedRugTypes(rugTypes);
       console.log("Detected rug types:", rugTypes);
       setIsDetectingRug(false);

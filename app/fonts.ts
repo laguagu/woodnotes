@@ -1,4 +1,10 @@
-import { Inter, Roboto_Mono, Montserrat, Open_Sans } from "next/font/google";
+import {
+  Inter,
+  Montserrat,
+  Open_Sans,
+  Poppins,
+  Roboto_Mono,
+} from "next/font/google";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -17,6 +23,12 @@ export const open_sans = Open_Sans({
 
 export const montserrat = Montserrat({
   weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });

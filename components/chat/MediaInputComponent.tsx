@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Camera, Upload, Check, RefreshCw } from "lucide-react";
-import Image from "next/image";
-import Webcam from "react-webcam";
 import { CameraSkeleton } from "@/components/chat/skeletons";
+import { Button } from "@/components/ui/button";
+import { Camera, Check, RefreshCw, Upload } from "lucide-react";
+import Image from "next/image";
+import React, { useRef, useState } from "react";
+import Webcam from "react-webcam";
 
 interface WoodnotesMediaInputComponentProps {
   handleDetectRug: (value: string) => void;
@@ -85,6 +85,7 @@ export default function WoodnotesMediaInputComponent({
       {!isCameraActive && !imageURL && (
         <div className="text-center p-6 bg-gray-50 rounded-lg shadow-sm">
           <Image
+            priority
             alt="Capture your Woodnotes rug"
             src="/steps/step-1.webp"
             height={200}

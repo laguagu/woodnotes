@@ -1,13 +1,10 @@
-import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { CareGuidesProps, RugTypes } from "@/lib/definitions";
-import { rugPhotos } from "@/lib/photos";
-import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -15,9 +12,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CareGuidesProps, RugTypes } from "@/lib/definitions";
+import { rugPhotos } from "@/lib/photos";
 import { Play } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 function formatRugTypeName(name: RugTypes): string {
   return name
@@ -60,8 +66,10 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
               <Image
                 src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
                 alt="Video thumbnail"
-                layout="fill"
-                objectFit="cover"
+                priority
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: "cover" }}
                 className="rounded-lg"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300">
@@ -70,6 +78,11 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
             </div>
           </DialogTrigger>
           <DialogContent className="max-w-3xl">
+            <DialogTitle className="sr-only">Care Guide Video</DialogTitle>
+            <DialogDescription className="sr-only">
+              This video provides detailed instructions on how to care for your
+              Woodnotes rugs.
+            </DialogDescription>
             <VideoPlayer videoId={videoId} />
           </DialogContent>
         </Dialog>

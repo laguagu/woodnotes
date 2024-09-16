@@ -22,19 +22,14 @@ export const careInstructions: RugCareInstructions = {
     "2": "Stain removal: For stains, use a mild soap solution and soft brush. Rinse thoroughly and allow to dry completely in the sun.",
     "3": "Storage: During winter or extended periods of non-use, clean and dry your outdoor rug thoroughly, then roll it up and store in a dry, cool place to prevent mold and mildew.",
   },
-  duetto: {
+  cottonPaperYarnRugs: {
     "1": "Daily care: Vacuum your Woodnotes Duetto rug regularly using a smooth nozzle without a rotating brush. The unique double-sided design allows you to flip the rug for extended wear.",
     "2": "Spot cleaning: For small stains, use a damp cloth with a mild soap solution. Gently dab the stain, don't rub. Avoid excessive use of water and dry thoroughly after cleaning.",
     "3": "Maintenance: Rotate and flip your Duetto rug periodically to ensure even wear on both sides. This will extend the life of your rug and maintain its appearance.",
   },
-  piccolo: {
+  woolPaperYarnRugs: {
     "1": "Regular care: Vacuum your Woodnotes Piccolo rug regularly using a smooth nozzle without a rotating brush. The compact size of Piccolo makes it easy to shake out for quick cleaning.",
     "2": "Stain removal: For spills, blot immediately with a clean, dry cloth. For stubborn stains, use a mild soap solution and gently dab. Avoid rubbing, which can damage the fibers.",
     "3": "Professional cleaning: For deep cleaning, we recommend professional services that specialize in natural fiber rugs. Avoid machine washing or soaking the rug.",
-  },
-  minore: {
-    "1": "Daily maintenance: Vacuum your Woodnotes Minore rug regularly using a suction-only vacuum cleaner. The rug's smaller size makes it easy to lift and shake out for thorough cleaning.",
-    "2": "Spot cleaning: For small stains, use a damp cloth with a mild soap solution. Gently dab the stain, don't rub. Dry thoroughly after cleaning to prevent water damage.",
-    "3": "Rotation: Due to its compact size, the Minore rug can be easily rotated. Do this periodically to ensure even wear and maintain its appearance.",
   },
 };

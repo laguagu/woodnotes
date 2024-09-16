@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import sharp from "sharp";
-import OpenAI from "openai";
 import dedent from "dedent";
 import fs from "fs/promises";
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 import path from "path";
+import sharp from "sharp";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -144,17 +144,33 @@ export async function POST(req: Request, res: Response) {
     // const pricing = pricingInfo[modelVersion as GPT4oVersion];
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-2024-08-06",
+      model: modelVersion,
       messages: [
         {
           role: "user",
           content: [
             {
               type: "text",
-              text: dedent`Analyze the image provided and identify any Woodnotes rugs present. Even if you're not 100% certain, provide your best guess for the rug type you think are most likely present. 
-              Set the values to true for the rug types you believe are present, and false for others. Use the following JSON format for your 
-              response: { paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }. 
-              If you're completely unsure or no rug is visible, you may return all false values, but try to make an educated guess if possible. If multiple rug types seem plausible, you may set multiple values to true.`,
+              text: dedent`Analyze the image provided and identify any Woodnotes carpets present. Even if you're not 100% certain, provide your best guess for the carpet types you think are most likely present. 
+              Set the values to true for the carpet types you believe are present, and false for others. Use the following JSON format for your 
+              response: 
+              {
+                "paperYarnRugs": false,
+                "handKnottedRugs": false,
+                "tuftedRugs": false,
+                "outdoorRugs": false,
+                "cottonPaperYarnRugs": false,
+                "woolPaperYarnRugs": false
+              }
+              Consider the following descriptions when analyzing:
+              - paperYarnRugs: Woven paper yarn carpets
+              - handKnottedRugs: Hand knotted wool carpets
+              - tuftedRugs: Tufted wool linen carpets
+              - outdoorRugs: Woven In/Out carpets
+              - cottonPaperYarnRugs: Woven cotton paper yarn carpets
+              - woolPaperYarnRugs: Woven wool paper yarn carpets
+
+              If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, and apparent material of the carpet in your analysis.`,
             },
             {
               type: "image_url",
@@ -171,27 +187,9 @@ export async function POST(req: Request, res: Response) {
     });
 
     const detectedRugTypes = JSON.parse(
-      response.choices[0].message.content || "{}",
+      response.choices[0].message.content ||
+        "{ paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }",
     );
-
-    // const outputTokens = response.usage?.completion_tokens || 0;
-    // const totalInputTokens = inputTokens + (response.usage?.prompt_tokens || 0);
-
-    // const inputCost = (totalInputTokens / 1000000) * pricing.inputPrice;
-    // const outputCost = (outputTokens / 1000000) * pricing.outputPrice;
-    // const totalCost = inputCost + outputCost;
-
-    // console.log(`
-    //   Cost estimation:
-    //   Model: ${modelVersion}
-    //   Detail level: ${detailLevel}
-    //   Image size: ${width}x${height}
-    //   Input tokens: ${totalInputTokens}
-    //   Output tokens: ${outputTokens}
-    //   Input cost: $${inputCost.toFixed(6)}
-    //   Output cost: $${outputCost.toFixed(6)}
-    //   Total estimated cost: $${totalCost.toFixed(6)}
-    // `);
 
     return NextResponse.json(detectedRugTypes);
   } catch (error) {

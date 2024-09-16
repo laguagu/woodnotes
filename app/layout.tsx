@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { open_sans } from "./fonts";
+import { poppins } from "./fonts";
 import "./globals.css";
+
 export const metadata: Metadata = {
   title: "Care Instructor",
   description:
@@ -14,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${open_sans.className} antialiased`}>
+      <body className={`${poppins.className} antialiased`}>
         <main>{children}</main>
       </body>
     </html>
