@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import path from "path";
 import sharp from "sharp";
+import { z } from "zod";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -18,6 +19,15 @@ interface PricingInfo {
   inputPrice: number;
   outputPrice: number;
 }
+
+const CarpetTypes = z.object({
+  paperYarnRugs: z.boolean(),
+  handKnottedRugs: z.boolean(),
+  tuftedRugs: z.boolean(),
+  outdoorRugs: z.boolean(),
+  cottonPaperYarnRugs: z.boolean(),
+  woolPaperYarnRugs: z.boolean(),
+});
 
 const pricingInfo: Record<GPT4oVersion, PricingInfo> = {
   "gpt-4o": { inputPrice: 5.0, outputPrice: 15.0 },
@@ -190,6 +200,42 @@ export async function POST(req: Request, res: Response) {
       response.choices[0].message.content ||
         "{ paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }",
     );
+
+    // Toinen esimerkki ZOD scheeman kanssa
+    // const response = await openai.beta.chat.completions.parse({
+    //   model: modelVersion,
+    //   messages: [
+    //     {
+    //       role: "user",
+    //       content: [
+    //         {
+    //           type: "text",
+    //           text: dedent`Analyze the image provided and identify any Woodnotes carpets present. Even if you're not 100% certain, provide your best guess for the carpet types you think are most likely present.
+    //           Set the values to true for the carpet types you believe are present, and false for others.
+    //           Consider the following descriptions when analyzing:
+    //           - paperYarnRugs: Woven paper yarn carpets
+    //           - handKnottedRugs: Hand knotted wool carpets
+    //           - tuftedRugs: Tufted wool linen carpets
+    //           - outdoorRugs: Woven In/Out carpets
+    //           - cottonPaperYarnRugs: Woven cotton paper yarn carpets
+    //           - woolPaperYarnRugs: Woven wool paper yarn carpets
+
+    //           If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, and apparent material of the carpet in your analysis.`,
+    //         },
+    //         {
+    //           type: "image_url",
+    //           image_url: {
+    //             url: processedImageBase64,
+    //             detail: detailLevel,
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   response_format: zodResponseFormat(CarpetTypes, "detectedRugTypes"),
+    // });
+
+    // const detectedRugTypes = response.choices[0].message.parsed;
 
     return NextResponse.json(detectedRugTypes);
   } catch (error) {
