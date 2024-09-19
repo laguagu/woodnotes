@@ -34,9 +34,7 @@ export const CardSteps = () => {
             <span className="text-2xl font-light text-black mb-2 relative">
               {index + 1}.
             </span>
-            <p className="text-sm text-foreground">
-              {step.description}
-            </p>
+            <p className="text-sm text-foreground">{step.description}</p>
           </MotionDiv>
         ))}
       </div>
@@ -69,9 +67,7 @@ export const CardSteps = () => {
 export function Cards() {
   return (
     <div className="flex flex-col items-center px-4 py-8 mx-auto rounded-lg">
-      <h2 className="text-xl text-[#5c5c5c] mb-6 text-center">
-        How It Works
-      </h2>
+      <h2 className="text-xl text-[#5c5c5c] mb-6 text-center">How It Works</h2>
       <CardSteps />
     </div>
   );

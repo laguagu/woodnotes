@@ -83,7 +83,7 @@ export default function WoodnotesMediaInputComponent({
   return (
     <div className="flex flex-col items-center justify-center space-y-6 my-8 max-w-md mx-auto">
       {!isCameraActive && !imageURL && (
-        <div className="text-center p-6 bg-gray-50 rounded-lg shadow-sm">
+        <div className="text-center p-6 bg-gray-50 rounded-lg shadow-sm border">
           <Image
             priority
             alt="Capture your Woodnotes rug"
