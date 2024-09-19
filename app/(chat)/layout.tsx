@@ -1,7 +1,7 @@
 import { HomeButton } from "@/components/ui/HomeButton";
+import { Toaster } from "@/components/ui/sonner";
 import Link from "next/link";
 import React from "react";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function ChatLayout({
   children,
@@ -15,7 +15,7 @@ export default function ChatLayout({
           href={"/"}
           className="hover:text-gray-600 transition-colors duration-300"
         >
-          Care Instructions
+          Care Instructor
         </Link>
       </h1>
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl grid grid-cols-1 gap-4 p-4 rounded-lg border shadow-md border-gray-200 dark:border-gray-800 mx-auto bg-zinc-50">
