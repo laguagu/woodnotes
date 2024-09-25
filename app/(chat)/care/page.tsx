@@ -4,7 +4,9 @@ import WoodnotesCareInstructionsForm from "@/components/chat/care/CareInstructio
 import Error from "@/components/chat/error";
 import { FormSkeleton } from "@/components/chat/skeletons";
 import { detectRugType } from "@/lib/actions";
+import { fadeVariants } from "@/lib/animation-config";
 import { DetectedRugTypes } from "@/lib/definitions";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 export default function Page() {
@@ -31,23 +33,65 @@ export default function Page() {
   };
 
   return (
-    <div>
-      {error && !imageURL && <Error cameraError={error} />}
-      {!detectedRugTypes && !isDetectingRug && (
-        <WoodnotesMediaInputComponent
-          handleDetectRug={handleDetectRug}
-          setImageURL={setImageURL}
-          imageURL={imageURL}
-        />
-      )}
-      {isDetectingRug && (
-        <div className="flex justify-center">
-          <FormSkeleton />
-        </div>
-      )}
-      {detectedRugTypes && (
-        <WoodnotesCareInstructionsForm detectedRugTypes={detectedRugTypes} />
-      )}
-    </div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={fadeVariants}
+    >
+      <AnimatePresence mode="wait">
+        {error && !imageURL && (
+          <motion.div
+            key="error"
+            variants={fadeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <Error cameraError={error} />
+          </motion.div>
+        )}
+        {!detectedRugTypes && !isDetectingRug && (
+          <motion.div
+            key="mediaInput"
+            variants={fadeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <WoodnotesMediaInputComponent
+              handleDetectRug={handleDetectRug}
+              setImageURL={setImageURL}
+              imageURL={imageURL}
+            />
+          </motion.div>
+        )}
+        {isDetectingRug && (
+          <motion.div
+            key="formSkeleton"
+            variants={fadeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex justify-center"
+          >
+            <FormSkeleton />
+          </motion.div>
+        )}
+        {detectedRugTypes && (
+          <motion.div
+            key="careInstructions"
+            variants={fadeVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <WoodnotesCareInstructionsForm
+              detectedRugTypes={detectedRugTypes}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
