@@ -128,14 +128,14 @@ export default function WoodnotesMediaInputComponent({
             <Image
               priority
               alt="Capture your Woodnotes rug"
-              src="/steps/step-1.webp"
-              height={200}
-              width={200}
+              src="/steps/ai-3.webp"
+              height={250}
+              width={250}
               className="mx-auto mb-4 rounded-lg object-cover"
             />
             <p className="text-gray-700">
-              Capture a clear photo of your Woodnotes rug. Ensure good lighting
-              and that the entire rug is visible.
+              Take a clear, well-lit photo of your rug, ensuring all key details
+              are visible.
             </p>
           </motion.div>
         )}
