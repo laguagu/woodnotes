@@ -6,13 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -25,7 +18,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -70,7 +63,7 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
 export default function CareGuides({ careGuides }: CareGuidesProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
-  const isDesktop = useMediaQuery({ minWidth: 768 });
+
   return (
     <motion.div
       className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8"
@@ -85,7 +78,6 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         Maintenance Guide
       </motion.h1>
 
-      {/* Enhanced Video Section */}
       <motion.div className="mb-8 sm:mb-12" variants={itemVariants}>
         <h2 className="text-xl sm:text-2xl font-light text-gray-700 mb-3 sm:mb-4 text-center">
           Watch Our Care Guide Video
@@ -132,7 +124,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         {careGuides.map((careGuide, index) => {
           const rugType = careGuide.rugType;
           const multiPhotosRug = rugPhotos.find(
-            (photo) => photo.name === rugType,
+            (photo) => photo.name === rugType
           );
 
           return (
@@ -142,71 +134,61 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
               initial="hidden"
               animate="visible"
               exit="hidden"
+              className="mb-6 sm:mb-8"
             >
-              <Accordion type="single" collapsible className="mb-4 sm:mb-6">
-                <AccordionItem value={rugType} className="border-none">
-                  <AccordionTrigger className="bg-gray-100 hover:bg-gray-200 px-3 sm:px-6 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium text-gray-800 transition-all">
-                    {formatRugTypeName(rugType)}
-                  </AccordionTrigger>
-                  <AccordionContent className="pt-3 sm:pt-4">
-                    <Card className="border-none shadow-sm">
-                      <CardContent className="p-0">
-                        {!isDesktop && (
-                          <p className="text-xs sm:text-sm text-gray-500 text-center mb-2 px-2 sm:px-4">
-                            Swipe left or right to see more care instructions
-                          </p>
-                        )}
-                        <Carousel className="w-full max-w-xl mx-auto relative">
-                          <CarouselContent>
-                            {careGuide.instructions &&
-                              Object.entries(careGuide.instructions).map(
-                                ([key, instruction], idx) => {
-                                  const photo = multiPhotosRug?.photos[idx];
-                                  const [title, content] =
-                                    instruction.split(": ");
-                                  return (
-                                    <CarouselItem key={idx}>
-                                      <motion.div
-                                        className="p-2 sm:p-4"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                      >
-                                        {photo && (
-                                          <div className="mb-3 sm:mb-4">
-                                            <Image
-                                              alt="Rug care instruction"
-                                              src={photo.imageSrc}
-                                              height={400}
-                                              width={400}
-                                              className="rounded-lg shadow-sm object-cover w-full h-48 sm:h-64"
-                                            />
-                                          </div>
-                                        )}
-                                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 text-center">
-                                          {title}
-                                        </h3>
-                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                                          {content}
-                                        </p>
-                                      </motion.div>
-                                    </CarouselItem>
-                                  );
-                                },
-                              )}
-                          </CarouselContent>
-                          <div className="hidden md:block absolute -left-12 top-1/2 transform -translate-y-1/2">
-                            <CarouselPrevious />
-                          </div>
-                          <div className="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2">
-                            <CarouselNext />
-                          </div>
-                        </Carousel>
-                      </CardContent>
-                    </Card>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <h2 className="text-xl sm:text-2xl font-medium text-gray-800 mb-3 sm:mb-4">
+                {formatRugTypeName(rugType)}
+              </h2>
+              <Card className="border-none shadow-sm">
+                <CardContent className="p-4">
+                  <Accordion type="multiple" className="w-full">
+                    {careGuide.instructions &&
+                      Object.entries(careGuide.instructions).map(
+                        ([key, instruction], idx) => {
+                          const photo = multiPhotosRug?.photos[idx];
+                          let title, content;
+
+                          if (instruction.includes(":")) {
+                            [title, content] = instruction.split(/:(.*)/s);
+                          } else {
+                            title = `Instruction ${key}`;
+                            content = instruction;
+                          }
+
+                          return (
+                            <AccordionItem
+                              key={key}
+                              value={`${rugType}-${key}`}
+                              className="border-b"
+                            >
+                              <AccordionTrigger className="py-3 text-left text-base sm:text-lg font-medium text-gray-700 hover:text-gray-900 transition-colors">
+                                {title.trim()}
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="pt-2 pb-4">
+                                  {photo && (
+                                    <div className="mb-3 sm:mb-4">
+                                      <Image
+                                        alt={`${title.trim()} for ${formatRugTypeName(rugType)}`}
+                                        src={photo.imageSrc}
+                                        height={400}
+                                        width={400}
+                                        className="rounded-lg shadow-sm object-cover w-full h-48 sm:h-64"
+                                      />
+                                    </div>
+                                  )}
+                                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                                    {content.trim()}
+                                  </p>
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          );
+                        }
+                      )}
+                  </Accordion>
+                </CardContent>
+              </Card>
             </motion.div>
           );
         })}
