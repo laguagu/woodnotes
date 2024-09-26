@@ -25,7 +25,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-
+import { useMediaQuery } from "react-responsive";
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -70,24 +70,24 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
 export default function CareGuides({ careGuides }: CareGuidesProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
-
+  const isDesktop = useMediaQuery({ minWidth: 768 });
   return (
     <motion.div
-      className="max-w-4xl mx-auto px-4 py-8"
+      className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.h1
-        className="text-3xl font-light text-gray-800 mb-6 text-center"
+        className="text-2xl sm:text-3xl font-light text-gray-800 mb-4 sm:mb-6 text-center"
         variants={itemVariants}
       >
-        Care Instructions
+        Maintenance Guide
       </motion.h1>
 
       {/* Enhanced Video Section */}
-      <motion.div className="mb-12" variants={itemVariants}>
-        <h2 className="text-2xl font-light text-gray-700 mb-4 text-center">
+      <motion.div className="mb-8 sm:mb-12" variants={itemVariants}>
+        <h2 className="text-xl sm:text-2xl font-light text-gray-700 mb-3 sm:mb-4 text-center">
           Watch Our Care Guide Video
         </h2>
         <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
@@ -106,7 +106,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                 className="rounded-lg"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300">
-                <Play className="w-16 h-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                <Play className="w-12 h-12 sm:w-16 sm:h-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
               </div>
             </motion.div>
           </DialogTrigger>
@@ -122,7 +122,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
       </motion.div>
 
       <motion.p
-        className="text-gray-600 mb-8 text-center"
+        className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 text-center"
         variants={itemVariants}
       >
         Select a rug type below to view its specific care instructions.
@@ -143,41 +143,51 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
               animate="visible"
               exit="hidden"
             >
-              <Accordion type="single" collapsible className="mb-6">
+              <Accordion type="single" collapsible className="mb-4 sm:mb-6">
                 <AccordionItem value={rugType} className="border-none">
-                  <AccordionTrigger className="bg-gray-100 hover:bg-gray-200 px-6 py-4 rounded-lg text-lg font-medium text-gray-800 transition-all">
+                  <AccordionTrigger className="bg-gray-100 hover:bg-gray-200 px-3 sm:px-6 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium text-gray-800 transition-all">
                     {formatRugTypeName(rugType)}
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4">
+                  <AccordionContent className="pt-3 sm:pt-4">
                     <Card className="border-none shadow-sm">
                       <CardContent className="p-0">
-                        <Carousel className="w-full max-w-xl mx-auto">
+                        {!isDesktop && (
+                          <p className="text-xs sm:text-sm text-gray-500 text-center mb-2 px-2 sm:px-4">
+                            Swipe left or right to see more care instructions
+                          </p>
+                        )}
+                        <Carousel className="w-full max-w-xl mx-auto relative">
                           <CarouselContent>
                             {careGuide.instructions &&
                               Object.entries(careGuide.instructions).map(
                                 ([key, instruction], idx) => {
                                   const photo = multiPhotosRug?.photos[idx];
+                                  const [title, content] =
+                                    instruction.split(": ");
                                   return (
                                     <CarouselItem key={idx}>
                                       <motion.div
-                                        className="p-4"
+                                        className="p-2 sm:p-4"
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
                                       >
                                         {photo && (
-                                          <div className="mb-4">
+                                          <div className="mb-3 sm:mb-4">
                                             <Image
                                               alt="Rug care instruction"
                                               src={photo.imageSrc}
                                               height={400}
                                               width={400}
-                                              className="rounded-lg shadow-sm object-cover w-full h-64"
+                                              className="rounded-lg shadow-sm object-cover w-full h-48 sm:h-64"
                                             />
                                           </div>
                                         )}
-                                        <p className="text-gray-700 text-lg leading-relaxed">
-                                          {instruction}
+                                        <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 text-center">
+                                          {title}
+                                        </h3>
+                                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                                          {content}
                                         </p>
                                       </motion.div>
                                     </CarouselItem>
@@ -185,8 +195,12 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                                 },
                               )}
                           </CarouselContent>
-                          <CarouselPrevious className="left-2" />
-                          <CarouselNext className="right-2" />
+                          <div className="hidden md:block absolute -left-12 top-1/2 transform -translate-y-1/2">
+                            <CarouselPrevious />
+                          </div>
+                          <div className="hidden md:block absolute -right-12 top-1/2 transform -translate-y-1/2">
+                            <CarouselNext />
+                          </div>
                         </Carousel>
                       </CardContent>
                     </Card>

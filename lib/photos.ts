@@ -32,6 +32,18 @@ export const rugPhotos: RugMaterialPhotos[] = [
         href: "paperYarnRugs",
         imageSrc: "/care-instructions/paperYarnRugs/paper-yarn-3-min.jpg",
       },
+      {
+        id: "4",
+        name: "paperYarnRugs",
+        href: "paperYarnRugs",
+        imageSrc: "/care-instructions/paperYarnRugs/paper-yarn-2-min.jpg",
+      },
+      {
+        id: "5",
+        name: "paperYarnRugs",
+        href: "paperYarnRugs",
+        imageSrc: "/care-instructions/paperYarnRugs/paper-yarn-1-min.jpg",
+      },
     ],
   },
   {
@@ -51,6 +63,18 @@ export const rugPhotos: RugMaterialPhotos[] = [
       },
       {
         id: "3",
+        name: "handKnottedRugs",
+        href: "handKnottedRugs",
+        imageSrc: "/care-instructions/handKnottedRugs/hand-knotted-3-min.jpg",
+      },
+      {
+        id: "4",
+        name: "handKnottedRugs",
+        href: "handKnottedRugs",
+        imageSrc: "/care-instructions/handKnottedRugs/hand-knotted-2-min.jpg",
+      },
+      {
+        id: "5",
         name: "handKnottedRugs",
         href: "handKnottedRugs",
         imageSrc: "/care-instructions/handKnottedRugs/hand-knotted-3-min.jpg",
@@ -78,6 +102,18 @@ export const rugPhotos: RugMaterialPhotos[] = [
         href: "tuftedRugs",
         imageSrc: "/care-instructions/tuftedRugs/tufferugs-3-min.jpg",
       },
+      {
+        id: "4",
+        name: "tuftedRugs",
+        href: "tuftedRugs",
+        imageSrc: "/care-instructions/tuftedRugs/tufferugs-2-min.png",
+      },
+      {
+        id: "5s",
+        name: "tuftedRugs",
+        href: "tuftedRugs",
+        imageSrc: "/care-instructions/tuftedRugs/tufferugs-3-min.jpg",
+      },
     ],
   },
   {
@@ -97,6 +133,18 @@ export const rugPhotos: RugMaterialPhotos[] = [
       },
       {
         id: "3",
+        name: "outdoorRugs",
+        href: "outdoorRugs",
+        imageSrc: "/care-instructions/outdoorRugs/outdoor-3-min.jpg",
+      },
+      {
+        id: "4",
+        name: "outdoorRugs",
+        href: "outdoorRugs",
+        imageSrc: "/care-instructions/outdoorRugs/outdoor-2-min.jpg",
+      },
+      {
+        id: "5",
         name: "outdoorRugs",
         href: "outdoorRugs",
         imageSrc: "/care-instructions/outdoorRugs/outdoor-3-min.jpg",
@@ -126,6 +174,20 @@ export const rugPhotos: RugMaterialPhotos[] = [
         imageSrc:
           "/care-instructions/cottonPaperYarnRugs/cotton-paper-3-min.jpg",
       },
+      {
+        id: "4",
+        name: "cottonPaperYarnRugs",
+        href: "cottonPaperYarnRugs",
+        imageSrc:
+          "/care-instructions/cottonPaperYarnRugs/cottor-paper-2-min.jpg",
+      },
+      {
+        id: "5",
+        name: "cottonPaperYarnRugs",
+        href: "cottonPaperYarnRugs",
+        imageSrc:
+          "/care-instructions/cottonPaperYarnRugs/cotton-paper-3-min.jpg",
+      },
     ],
   },
   {
@@ -145,6 +207,18 @@ export const rugPhotos: RugMaterialPhotos[] = [
       },
       {
         id: "3",
+        name: "woolPaperYarnRugs",
+        href: "woolPaperYarnRugs",
+        imageSrc: "/care-instructions/woolPaperYarnRugs/wool-paper-3-min.jpg",
+      },
+      {
+        id: "4",
+        name: "woolPaperYarnRugs",
+        href: "woolPaperYarnRugs",
+        imageSrc: "/care-instructions/woolPaperYarnRugs/wool-paper-2-min.jpeg",
+      },
+      {
+        id: "5",
         name: "woolPaperYarnRugs",
         href: "woolPaperYarnRugs",
         imageSrc: "/care-instructions/woolPaperYarnRugs/wool-paper-3-min.jpg",
