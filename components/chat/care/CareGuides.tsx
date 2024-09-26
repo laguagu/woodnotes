@@ -149,7 +149,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                           let title, content;
 
                           if (instruction.includes(":")) {
-                            [title, content] = instruction.split(/:(.*)/s);
+                            [title, content] = instruction.split(/:(.*)/);
                           } else {
                             title = `Instruction ${key}`;
                             content = instruction;
