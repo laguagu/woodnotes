@@ -134,7 +134,7 @@ export async function POST(req: Request, res: Response) {
       image_url,
       detailLevel = "high",
       saveProcessedImage = false,
-      modelVersion = "gpt-4o-2024-08-06",
+      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotes-mattojen-tunnistus-64-kuvaa:AFm6DDdT",
     } = await req.json();
 
     if (!image_url || typeof image_url !== "string") {
