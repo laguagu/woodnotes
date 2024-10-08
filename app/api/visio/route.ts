@@ -38,7 +38,7 @@ const pricingInfo: Record<GPT4oVersion, PricingInfo> = {
 function calculateTokens(
   width: number,
   height: number,
-  detailLevel: DetailLevel,
+  detailLevel: DetailLevel
 ): number {
   if (detailLevel === "low" || detailLevel === "auto") {
     return 85; // Kiinteä kustannus low-tilassa
@@ -62,7 +62,7 @@ function calculateTokens(
 async function processImage(
   input: Buffer | string,
   detailLevel: DetailLevel,
-  saveProcessedImage: boolean = false,
+  saveProcessedImage: boolean = false
 ): Promise<string> {
   let buffer: Buffer;
 
@@ -117,7 +117,7 @@ async function processImage(
       process.cwd(),
       "public",
       "processed_images",
-      filename,
+      filename
     );
     await fs.writeFile(savePath, resizedImage);
     console.log(`Processed image saved to: ${savePath}`);
@@ -140,14 +140,14 @@ export async function POST(req: Request, res: Response) {
     if (!image_url || typeof image_url !== "string") {
       return NextResponse.json(
         { message: "Invalid or missing image_url in request body" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const processedImageBase64 = await processImage(
       image_url,
       detailLevel as DetailLevel,
-      saveProcessedImage,
+      saveProcessedImage
     );
 
     // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
@@ -172,15 +172,17 @@ export async function POST(req: Request, res: Response) {
                 "cottonPaperYarnRugs": false,
                 "woolPaperYarnRugs": false
               }
-              Consider the following descriptions when analyzing:
-              - paperYarnRugs: Woven paper yarn carpets
-              - handKnottedRugs: Hand knotted wool carpets
-              - tuftedRugs: Tufted wool linen carpets
-              - outdoorRugs: Woven In/Out carpets
-              - cottonPaperYarnRugs: Woven cotton paper yarn carpets
-              - woolPaperYarnRugs: Woven wool paper yarn carpets
+                Consider the following detailed descriptions when analyzing:
+                - paperYarnRugs: Woven paper yarn carpets. Characterized by a flat, smooth surface with a subtle matte sheen. Primarily composed of paper yarn (76-86%) with cotton warp (13-14%). Very thin profile (about 6mm). May have various edge finishes: sewn edges, fringes, cotton borders, or wide paper yarn cotton edging. Available in rectangular, square, or round shapes. Colors tend to be matte and natural-looking due to the paper yarn. Texture appears uniform and tightly woven. Some models, like Big Stripe, may have a pattern resembling outdoor rugs. In these cases, focus on the material texture and edge finish to differentiate.
+                - handKnottedRugs: Includes UNI and GRID carpets. Hand-knotted, made of 90% New Zealand wool and 10% cotton. Features natural, undyed sheep wool colors (except black) for environmental friendliness. Low, tight pile with unique color variations. Each corner has removable braided wool fringes. Suitable for both traditional and contemporary settings.
+                - tuftedRugs: Tufted wool linen carpets. Characterized by a dense, textured surface with visible tufts. May have a plush or looped pile appearance. Often features subtle patterns or solid colors. The blend of wool and linen can give a unique matte finish with slight variations in texture.
+                - outdoorRugs: Woven In/Out carpets made of 100% polypropylene fiber. Characterized by a flat, smooth surface with a distinct synthetic sheen, different from the matte finish of paper yarn rugs. Available only in square or rectangular shapes with thin, precisely finished edges. Colors are more vibrant and saturated compared to paper yarn rugs. May show slight imprints or wrinkles from use. Light colors may appear cooler in sunny areas compared to dark colors.
+                - cottonPaperYarnRugs: Includes DUETTO and PICCOLO models. Hand-woven with a unique blend of cotton (70-74%) and paper yarn (26-30%). Features a distinctive three-dimensional, textured surface with a more pronounced weave pattern compared to pure paper yarn rugs. Reversible use design. Characterized by a firmer texture and slightly thicker profile (12-15mm) than paper yarn rugs. Available in various colors, with paper yarn color indicated by a number after the model name.
+                - woolPaperYarnRugs: Includes Minore carpet. Hand-woven combining wool and paper yarn. Characterized by a unique three-dimensional surface texture with visible wool and paper yarn combination. Natural, undyed colors with earthy tones. Thicker profile compared to pure paper yarn rugs. May show subtle color variations due to undyed wool.
 
-              If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, and apparent material of the carpet in your analysis.`,
+                Pay close attention to the texture, thickness, and edge finish of the carpet. Paper yarn rugs are typically very thin (6mm) with a matte finish, while cotton-paper yarn rugs are slightly thicker (12-15mm) with a more pronounced texture. Outdoor rugs have a distinct synthetic sheen and thin, precisely finished edges.
+
+                If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, apparent material, thickness, and edge finish of the carpet in your analysis.`,
             },
             {
               type: "image_url",
@@ -198,7 +200,7 @@ export async function POST(req: Request, res: Response) {
 
     const detectedRugTypes = JSON.parse(
       response.choices[0].message.content ||
-        "{ paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }",
+        "{ paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }"
     );
 
     // Toinen esimerkki ZOD scheeman kanssa
