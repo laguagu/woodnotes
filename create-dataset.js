@@ -358,12 +358,12 @@ const createJSONL = () => {
     if (carpet.type === "") {
       // Jos tyyppi on tyhjä, aseta kaikki arvot falseksi
       resultObject = Object.fromEntries(
-        carpetTypes.map((type) => [type, false])
+        carpetTypes.map((type) => [type, false]),
       );
     } else {
       // Muuten toimi kuten aiemmin
       resultObject = Object.fromEntries(
-        carpetTypes.map((type) => [type, type === carpet.type])
+        carpetTypes.map((type) => [type, type === carpet.type]),
       );
     }
 
