@@ -29,6 +29,8 @@ const CarpetTypes = z.object({
   woolPaperYarnRugs: z.boolean(),
 });
 
+type CarpetTypesType = z.infer<typeof CarpetTypes>;
+
 const pricingInfo: Record<GPT4oVersion, PricingInfo> = {
   "gpt-4o": { inputPrice: 5.0, outputPrice: 15.0 },
   "gpt-4o-2024-08-06": { inputPrice: 2.5, outputPrice: 10.0 },
@@ -134,7 +136,7 @@ export async function POST(req: Request, res: Response) {
       image_url,
       detailLevel = "high",
       saveProcessedImage = false,
-      modelVersion = "gpt-4o-2024-08-06",
+      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotes-full-dataset-84imgs:AFzpdgFF",
     } = await req.json();
 
     if (!image_url || typeof image_url !== "string") {
@@ -154,7 +156,7 @@ export async function POST(req: Request, res: Response) {
     // const pricing = pricingInfo[modelVersion as GPT4oVersion];
 
     const response = await openai.chat.completions.create({
-      model: modelVersion,
+      model: "gpt-4o-2024-08-06",
       messages: [
         {
           role: "user",
@@ -172,15 +174,28 @@ export async function POST(req: Request, res: Response) {
                 "cottonPaperYarnRugs": false,
                 "woolPaperYarnRugs": false
               }
-              Consider the following descriptions when analyzing:
-              - paperYarnRugs: Woven paper yarn carpets
-              - handKnottedRugs: Hand knotted wool carpets
-              - tuftedRugs: Tufted wool linen carpets
-              - outdoorRugs: Woven In/Out carpets
-              - cottonPaperYarnRugs: Woven cotton paper yarn carpets
-              - woolPaperYarnRugs: Woven wool paper yarn carpets
+                Consider the following detailed descriptions when analyzing:
+                - paperYarnRugs: Woven paper yarn carpets. Characterized by a flat, smooth surface with a subtle matte sheen. Primarily composed of paper yarn (76-86%) with cotton warp (13-14%). Very thin profile (about 6mm). May have various edge finishes: sewn edges, fringes, cotton borders, or wide paper yarn cotton edging. Available in rectangular, square, or round shapes. Colors tend to be matte and natural-looking due to the paper yarn. Texture appears uniform and tightly woven. Some models, like Big Stripe, may have a pattern resembling outdoor rugs. In these cases, focus on the material texture and edge finish to differentiate.
+                - handKnottedRugs: Includes UNI and GRID carpets. Hand-knotted, made of 90% New Zealand wool and 10% cotton. Features natural, undyed sheep wool colors (except black) for environmental friendliness. Low, tight pile with unique color variations. Each corner has removable braided wool fringes. Suitable for both traditional and contemporary settings.
+                - tuftedRugs: Tufted wool linen carpets. Characterized by a dense, textured surface with visible tufts. May have a plush or looped pile appearance. Often features subtle patterns or solid colors. The blend of wool and linen can give a unique matte finish with slight variations in texture.
+                - outdoorRugs: Woven In/Out carpets made of 100% polypropylene fiber. Key characteristics:
+                  1. Distinctive synthetic sheen, more pronounced than paper yarn rugs
+                  2. Very thin profile (4-6mm) with a flat, smooth surface
+                  3. Only available in square or rectangular shapes
+                  4. Edges have a narrow (2.5cm) polypropylene edging, precisely finished
+                  5. Colors are more vibrant and saturated compared to natural fiber rugs
+                  6. May show slight imprints or wrinkles from use
+                  7. Light colors may appear cooler in sunny areas compared to dark colors
+                  8. Texture is uniform but may lack the natural variations seen in paper or wool rugs
+                  9. Often marketed as "In/Out" carpets, suitable for both indoor and outdoor use
+                  10. Maximum size is 3m width and 10m length
+                  11. If the rug is clearly situated in an outdoor setting (e.g., on a terrace, balcony, or garden), it is very likely to be an outdoor rug
+                - cottonPaperYarnRugs: Includes DUETTO and PICCOLO models. Hand-woven with a unique blend of cotton (70-74%) and paper yarn (26-30%). Features a distinctive three-dimensional, textured surface with a more pronounced weave pattern compared to pure paper yarn rugs. Reversible use design. Characterized by a firmer texture and slightly thicker profile (12-15mm) than paper yarn rugs. Available in various colors, with paper yarn color indicated by a number after the model name.
+                - woolPaperYarnRugs: Includes Minore carpet. Hand-woven combining wool and paper yarn. Characterized by a unique three-dimensional surface texture with visible wool and paper yarn combination. Natural, undyed colors with earthy tones. Thicker profile compared to pure paper yarn rugs. May show subtle color variations due to undyed wool.
 
-              If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, and apparent material of the carpet in your analysis.`,
+                Pay close attention to the texture, thickness, and edge finish of the carpet. Paper yarn rugs are typically very thin (6mm) with a matte finish, while cotton-paper yarn rugs are slightly thicker (12-15mm) with a more pronounced texture. Outdoor rugs have a distinct synthetic sheen and thin, precisely finished edges.
+
+                If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, apparent material, thickness, and edge finish of the carpet in your analysis.`,
             },
             {
               type: "image_url",
@@ -192,50 +207,30 @@ export async function POST(req: Request, res: Response) {
           ],
         },
       ],
-      max_tokens: 1000,
       response_format: { type: "json_object" },
     });
 
-    const detectedRugTypes = JSON.parse(
-      response.choices[0].message.content ||
-        "{ paperYarnRugs: false, handKnottedRugs: false, tuftedRugs: false, outdoorRugs: false, duetto: false, piccolo: false, minore: false }",
-    );
+    let detectedRugTypes: CarpetTypesType;
 
-    // Toinen esimerkki ZOD scheeman kanssa
-    // const response = await openai.beta.chat.completions.parse({
-    //   model: modelVersion,
-    //   messages: [
-    //     {
-    //       role: "user",
-    //       content: [
-    //         {
-    //           type: "text",
-    //           text: dedent`Analyze the image provided and identify any Woodnotes carpets present. Even if you're not 100% certain, provide your best guess for the carpet types you think are most likely present.
-    //           Set the values to true for the carpet types you believe are present, and false for others.
-    //           Consider the following descriptions when analyzing:
-    //           - paperYarnRugs: Woven paper yarn carpets
-    //           - handKnottedRugs: Hand knotted wool carpets
-    //           - tuftedRugs: Tufted wool linen carpets
-    //           - outdoorRugs: Woven In/Out carpets
-    //           - cottonPaperYarnRugs: Woven cotton paper yarn carpets
-    //           - woolPaperYarnRugs: Woven wool paper yarn carpets
+    try {
+      const parsedResponse = JSON.parse(
+        response.choices[0].message.content || "{}",
+      );
 
-    //           If you're completely unsure or no carpet is visible, you may return all false values, but try to make an educated guess if possible. If multiple carpet types seem plausible, you may set multiple values to true. Consider the texture, pattern, and apparent material of the carpet in your analysis.`,
-    //         },
-    //         {
-    //           type: "image_url",
-    //           image_url: {
-    //             url: processedImageBase64,
-    //             detail: detailLevel,
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   response_format: zodResponseFormat(CarpetTypes, "detectedRugTypes"),
-    // });
-
-    // const detectedRugTypes = response.choices[0].message.parsed;
+      // Validoi ja muunna vastaus käyttäen Zod-skeemaa
+      detectedRugTypes = CarpetTypes.parse(parsedResponse);
+    } catch (error) {
+      console.error("Error parsing or validating JSON:", error);
+      // Jos validointi epäonnistuu, aseta oletusarvot
+      detectedRugTypes = {
+        paperYarnRugs: false,
+        handKnottedRugs: false,
+        tuftedRugs: false,
+        outdoorRugs: false,
+        cottonPaperYarnRugs: false,
+        woolPaperYarnRugs: false,
+      };
+    }
 
     return NextResponse.json(detectedRugTypes);
   } catch (error) {
