@@ -128,7 +128,7 @@ export default function WoodnotesMediaInputComponent({
             <Image
               priority
               alt="Capture your Woodnotes rug"
-              src="/steps/ai-3.webp"
+              src="/steps/instructions.png"
               height={250}
               width={250}
               className="mx-auto mb-4 rounded-lg object-cover"
