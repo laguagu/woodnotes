@@ -63,6 +63,9 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
 export default function CareGuides({ careGuides }: CareGuidesProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
+  const shouldShowVideo = careGuides.some(
+    (guide) => guide.rugType === "paperYarnRugs",
+  );
 
   return (
     <motion.div
@@ -78,40 +81,42 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         Maintenance Guide
       </motion.h1>
 
-      <motion.div className="mb-8 sm:mb-12" variants={itemVariants}>
-        <h2 className="text-xl sm:text-2xl font-light text-gray-700 mb-3 sm:mb-4 text-center">
-          Watch Our Care Guide Video
-        </h2>
-        <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-          <DialogTrigger asChild>
-            <motion.div
-              className="relative aspect-video cursor-pointer group"
-              whileTap={{ scale: 0.95 }}
-            >
-              <Image
-                src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                alt="Video thumbnail"
-                priority
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                style={{ objectFit: "cover" }}
-                className="rounded-lg"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300">
-                <Play className="w-12 h-12 sm:w-16 sm:h-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
-              </div>
-            </motion.div>
-          </DialogTrigger>
-          <DialogContent className="max-w-3xl">
-            <DialogTitle className="sr-only">Care Guide Video</DialogTitle>
-            <DialogDescription className="sr-only">
-              This video provides detailed instructions on how to care for your
-              Woodnotes rugs.
-            </DialogDescription>
-            <VideoPlayer videoId={videoId} />
-          </DialogContent>
-        </Dialog>
-      </motion.div>
+      {shouldShowVideo && (
+        <motion.div className="mb-8 sm:mb-12" variants={itemVariants}>
+          <h2 className="text-lg sm:text-xl font-light text-gray-700 mb-3 sm:mb-4 text-center">
+            Watch Our Care Guide Video for Paper Yarn Rugs
+          </h2>
+          <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
+            <DialogTrigger asChild>
+              <motion.div
+                className="relative aspect-video cursor-pointer group"
+                whileTap={{ scale: 0.95 }}
+              >
+                <Image
+                  src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                  alt="Video thumbnail"
+                  priority
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  style={{ objectFit: "cover" }}
+                  className="rounded-lg"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition-all duration-300">
+                  <Play className="w-12 h-12 sm:w-16 sm:h-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                </div>
+              </motion.div>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogTitle className="sr-only">Care Guide Video</DialogTitle>
+              <DialogDescription className="sr-only">
+                This video provides detailed instructions on how to care for
+                your Woodnotes rugs.
+              </DialogDescription>
+              <VideoPlayer videoId={videoId} />
+            </DialogContent>
+          </Dialog>
+        </motion.div>
+      )}
 
       <motion.p
         className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 text-center"
@@ -124,7 +129,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         {careGuides.map((careGuide, index) => {
           const rugType = careGuide.rugType;
           const multiPhotosRug = rugPhotos.find(
-            (photo) => photo.name === rugType
+            (photo) => photo.name === rugType,
           );
 
           return (
@@ -184,7 +189,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                               </AccordionContent>
                             </AccordionItem>
                           );
-                        }
+                        },
                       )}
                   </Accordion>
                 </CardContent>
