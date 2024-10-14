@@ -151,11 +151,11 @@ export async function POST(req: Request, res: Response) {
       detailLevel as DetailLevel,
       saveProcessedImage,
     );
-    console.log("processedImageBase64");
+
+    console.log("Kutsuttu tekoälyä aika:", new Date().toLocaleString());
 
     // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
     // const pricing = pricingInfo[modelVersion as GPT4oVersion];
-    console.log("modelVersion");
 
     const response = await openai.chat.completions.create({
       model: "ft:gpt-4o-2024-08-06:personal:woodnotest-84-kuvaa-uusi:AIAHrRYr",
@@ -212,7 +212,6 @@ export async function POST(req: Request, res: Response) {
       ],
       response_format: { type: "json_object" },
     });
-    console.log("response");
 
     let detectedRugTypes: CarpetTypesType;
 

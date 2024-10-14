@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ErrorProps {
   cameraError: string | null;
 }
@@ -25,7 +23,8 @@ export default function Error({ cameraError }: ErrorProps) {
         </div>
         <div className="ml-3">
           <p className="text-sm text-red-700">
-            <strong className="font-bold">Error:</strong> {cameraError}
+            <strong className="font-bold">Error:</strong>
+            {/* <strong className="font-bold">Error:</strong> {cameraError} */}
             <span>. Please try again with another photo</span>
           </p>
         </div>
