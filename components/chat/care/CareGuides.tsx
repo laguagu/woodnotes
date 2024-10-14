@@ -25,7 +25,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.8,
+      ease: "easeOut",
       // when: "beforeChildren",
       staggerChildren: 0.1,
     },
@@ -37,10 +38,12 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.3 },
+    transition: { 
+      duration: 0.5,
+      ease: "easeOut",
+    },
   },
 };
-
 function formatRugTypeName(name: RugTypes): string {
   return name
     .replace(/([A-Z])/g, " $1")
@@ -92,7 +95,8 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
             <DialogTrigger asChild>
               <motion.div
                 className="relative aspect-video cursor-pointer group"
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
               >
                 <Image
                   src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
