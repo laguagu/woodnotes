@@ -20,11 +20,8 @@ export default function Page() {
     setIsDetectingRug(true);
     setError(null);
     try {
-      console.log("Detecting rug types");
       const rugTypes = await detectRugType(image_url);
-      console.log("Detected rug types:", rugTypes);
       setDetectedRugTypes(rugTypes);
-      console.log("Detected rug types:", rugTypes);
       setIsDetectingRug(false);
     } catch (error) {
       setError((error as Error).message);
