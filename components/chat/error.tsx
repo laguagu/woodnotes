@@ -25,7 +25,7 @@ export default function Error({ cameraError }: ErrorProps) {
           <p className="text-sm text-red-700">
             <strong className="font-bold">Error:</strong>
             {/* <strong className="font-bold">Error:</strong> {cameraError} */}
-            <span>. Please try again with another photo</span>
+            <span>Something went wrong. Please try again.</span>
           </p>
         </div>
       </div>
