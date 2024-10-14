@@ -54,7 +54,6 @@ export default function WoodnotesMediaInputComponent({
           }
 
           const resizedImage = await response.text();
-          console.log("resizedImage", resizedImage);
           setImageURL(resizedImage);
         } catch (error) {
           console.error("Error processing image:", error);
