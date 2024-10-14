@@ -18,6 +18,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import FeedbackForm from "./FeedBackForm";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -61,6 +62,7 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
 };
 
 export default function CareGuides({ careGuides }: CareGuidesProps) {
+  const rugType = careGuides[0].rugType;
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
   const shouldShowVideo = careGuides.some(
@@ -198,6 +200,19 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
           );
         })}
       </AnimatePresence>
+      <motion.div
+        className="mt-12 text-center space-y-4"
+        variants={itemVariants}
+      >
+        <motion.p className="text-lg text-gray-700 font-medium">
+          Your feedback is valuable to us!
+        </motion.p>
+        <motion.p className="text-sm text-gray-600">
+          Help us improve our care guides and application by sharing your
+          thoughts.
+        </motion.p>
+        <FeedbackForm rugType={rugType} />
+      </motion.div>
     </motion.div>
   );
 }

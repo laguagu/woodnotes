@@ -131,7 +131,7 @@ export default function WoodnotesMediaInputComponent({
               src="/steps/instructions.png"
               height={250}
               width={250}
-              style={{ width: 'auto', height: 'auto' }}
+              style={{ width: "auto", height: "auto" }}
               className="mx-auto mb-4 rounded-lg object-cover"
             />
             <p className="text-gray-700">

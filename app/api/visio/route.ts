@@ -136,7 +136,7 @@ export async function POST(req: Request, res: Response) {
       image_url,
       detailLevel = "high",
       saveProcessedImage = false,
-      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotes-full-dataset-84imgs:AFzpdgFF",
+      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotest-84-kuvaa-uusi:AIAHrRYr",
     } = await req.json();
 
     if (!image_url || typeof image_url !== "string") {
@@ -151,12 +151,15 @@ export async function POST(req: Request, res: Response) {
       detailLevel as DetailLevel,
       saveProcessedImage,
     );
+    console.log("processedImageBase64");
 
     // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
     // const pricing = pricingInfo[modelVersion as GPT4oVersion];
+    console.log("modelVersion");
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-2024-08-06",
+      model: "ft:gpt-4o-2024-08-06:personal:woodnotest-84-kuvaa-uusi:AIAHrRYr",
+      // model: "gpt-4o-2024-08-06",
       messages: [
         {
           role: "user",
@@ -209,6 +212,7 @@ export async function POST(req: Request, res: Response) {
       ],
       response_format: { type: "json_object" },
     });
+    console.log("response");
 
     let detectedRugTypes: CarpetTypesType;
 
