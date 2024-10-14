@@ -38,7 +38,7 @@ export default function WoodnotesMediaInputComponent({
   };
 
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -245,7 +245,7 @@ export default function WoodnotesMediaInputComponent({
                 onClick={() => sendImageToAI(imageURL)}
                 className="w-40"
               >
-                Detect Rug Type
+                Detect Rug
                 <Check className="w-4 h-4 ml-2" />
               </Button>
               <Button variant="outline" onClick={resetStates} className="w-40">
