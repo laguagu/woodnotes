@@ -1,8 +1,11 @@
 "use client";
-import { useSearchParams } from "next/navigation";
-import { careInstructions } from "@/lib/hoitoOhjeet";
-import { RugTypes } from "@/lib/definitions";
 import CareGuides from "@/components/chat/care/CareGuides";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
+import { RugTypes } from "@/lib/definitions";
+import { careInstructions } from "@/lib/hoitoOhjeet";
+import { careInstructionsFi } from "@/lib/hoitoOhjeetFi";
+import { useLocale } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 function Page() {
   const searchParams = useSearchParams();
@@ -11,15 +14,24 @@ function Page() {
     ? (rugTypesParam.split(",") as RugTypes[])
     : [];
 
+  const locale = useLocale();
+  console.log("locale", locale);
+
+  // Valitse oikeat ohjeet kielen perusteella
+  const instructions = locale === "fi" ? careInstructionsFi : careInstructions;
+
   const careGuides = rugTypes.map((rugType) => {
     return {
       rugType: rugType,
-      instructions: careInstructions[rugType],
+      instructions: instructions[rugType],
     };
   });
 
   return (
-    <div>
+    <div className="relative">
+      <div className="flex justify-center sm:justify-end p-4 sm:p-0">
+        <LanguageSwitch />
+      </div>
       <CareGuides careGuides={careGuides} />
     </div>
   );

@@ -179,7 +179,7 @@ export const rugPhotos: RugMaterialPhotos[] = [
         name: "cottonPaperYarnRugs",
         href: "cottonPaperYarnRugs",
         imageSrc:
-          "/care-instructions/cottonPaperYarnRugs/cottor-paper-2-min.jpg",
+          "/care-instructions/cottonPaperYarnRugs/cotton-paper-4-min.png",
       },
       {
         id: "5",

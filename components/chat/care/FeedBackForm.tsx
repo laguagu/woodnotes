@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,14 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/db/supabase/client";
+import { useTranslations } from "next-intl";
 import React, { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const t = useTranslations("feedback");
+
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Submitting..." : "Submit Feedback"}
+      {pending ? t("submitting") : t("submit")}
     </Button>
   );
 }
@@ -34,17 +39,15 @@ async function submitFeedback(_prevState: any, formData: FormData) {
     });
 
     if (error) throw error;
-    return { success: true, message: "Feedback submitted successfully!" };
+    return { success: true, message: "successMessage" };
   } catch (error) {
     console.error("Error submitting feedback:", error);
-    return {
-      success: false,
-      message: "An error occurred while submitting feedback.",
-    };
+    return { success: false, message: "errorMessage" };
   }
 }
 
 export default function FeedbackForm({ rugType }: { rugType: string }) {
+  const t = useTranslations("feedback");
   const [isOpen, setIsOpen] = React.useState(false);
   const [state, formAction] = useFormState(submitFeedback, null);
   const formRef = React.useRef<HTMLFormElement>(null);
@@ -66,15 +69,13 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Provide Feedback</Button>
+        <Button variant="outline">{t("button")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogTitle className="flex justify-between items-center">
-          Feedback
+          {t("title")}
         </DialogTitle>
-        <DialogDescription>
-          Please rate the following aspects to help us improve.
-        </DialogDescription>
+        <DialogDescription>{t("description")}</DialogDescription>
         <form action={formAction} ref={formRef} className="space-y-4">
           <input type="hidden" name="rugType" value={rugType} />
 
@@ -83,14 +84,14 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
               htmlFor="aiRecognition"
               className="flex items-center space-x-2"
             >
-              <span>AI correctly recognized the rug type</span>
+              <span>{t("fields.aiRecognition.label")}</span>
               <Input type="checkbox" id="aiRecognition" name="aiRecognition" />
             </Label>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="careInstructionClarity">
-              Clarity of care instructions (1-10)
+              {t("fields.careInstructionClarity.label")}
             </Label>
             <Input
               id="careInstructionClarity"
@@ -104,7 +105,7 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
 
           <div className="space-y-2">
             <Label htmlFor="appUsability">
-              Ease of using the application (1-10)
+              {t("fields.appUsability.label")}
             </Label>
             <Input
               id="appUsability"
@@ -117,7 +118,9 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="overallRating">Overall satisfaction (1-10)</Label>
+            <Label htmlFor="overallRating">
+              {t("fields.overallRating.label")}
+            </Label>
             <Input
               id="overallRating"
               name="overallRating"
@@ -129,7 +132,7 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="comment">Additional comments or suggestions</Label>
+            <Label htmlFor="comment">{t("fields.comment.label")}</Label>
             <Textarea id="comment" name="comment" />
           </div>
 
@@ -141,7 +144,7 @@ export default function FeedbackForm({ rugType }: { rugType: string }) {
               state.success ? "text-green-500" : "text-red-500"
             }`}
           >
-            {state.message}
+            {t(state.message)}
           </p>
         )}
       </DialogContent>

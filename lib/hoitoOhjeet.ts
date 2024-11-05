@@ -24,7 +24,7 @@ export const careInstructions: RugCareInstructions = {
     "5": "Storage: When storing, roll the carpet tightly around a cardboard tube with the pile inside. Ensure the bottom of the carpet doesn't wrinkle. Store horizontally in an airy place. Do not store anything heavy on top.",
   },
   tuftedRugs: {
-    "1": "Regular care: Vacuum once a week (more often in heavy traffic areas) to remove dirt and dust. A new rug will produce fluff, but this is temporary. The rug may have lumps or waves from rolling during transport; these will even out over time. If necessary, steam the rug gently on backside with a flat iron over an ironing cloth or a fabric steamer.",
+    "1": "Regular care: Vacuum once a week (more often in heavy traffic areas) to remove dirt and dust. A new rug will produce fluff, but this is temporary. The rug may have lumps or waves from rolling during transport these will even out over time. If necessary, steam the rug gently on backside with a flat iron over an ironing cloth or a fabric steamer.",
 
     "2": "Stain removal: Remove stains immediately. For liquid spills, use a white paper towel or absorbent cotton towel. Tap the affected area with a damp sponge or towel, working from the edges towards the center. For harder stains, test gall soap on a small area first. Rinse with a clean damp sponge and dry gently. Remove dried stains carefully with a knife or spoon.",
 

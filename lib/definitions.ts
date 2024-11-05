@@ -22,9 +22,7 @@ export type RugCareInstructions = {
 
 export type RugInstructions = {
   rugType: RugTypes;
-  instructions:
-    | { "1": string; "2": string; "3"?: string; "4"?: string }
-    | undefined;
+  instructions: RugCareInstructions[RugTypes];
 };
 
 export type CareInstructionsFormProps = {

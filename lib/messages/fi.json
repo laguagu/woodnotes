@@ -1,0 +1,54 @@
+{
+  "care": {
+    "title": "Hoito-opas",
+    "videoTitle": "Katso paperilankamaton hoito-ohjevideo",
+    "selectText": "Valitse mattotyyppi alta nähdäksesi sen hoito-ohjeet",
+    "feedback": {
+      "title": "Palautteesi on meille tärkeää!",
+      "description": "Auta meitä parantamaan hoito-oppaitamme jakamalla ajatuksesi."
+    },
+    "rugTypes": {
+      "paperYarnRugs": "Kudotut Paperinarumatot",
+      "handKnottedRugs": "Käsinsolmitut Villamatot",
+      "tuftedRugs": "Tuftatut Villa-pellavamatot",
+      "outdoorRugs": "Kudotut Sisä/Ulko-matot",
+      "cottonPaperYarnRugs": "Kudotut Puuvilla-paperinarumatot",
+      "woolPaperYarnRugs": "Kudotut Villa-paperinarumatot"
+    },
+    "instructions": {
+      "paperYarnRugs": {
+        "1": "Säännöllinen hoito: Imurointi riittää Woodnotes-maton päivittäiseen hoitoon. Maton alta imurointia suositellaan kuukausittain. Matossa on teollinen likaahylkivä käsittely, joka voidaan uusia.",
+        "2": "Tahranpoisto: Poista tahrat tai läikät välittömästi...",
+        "3": "Syväpuhdistus: Paras tapa pestä paperilankamatto...",
+        "4": "Ylläpito: Säilytä matto tasaisesti rullattuna...",
+        "5": "Lisähoito: Tuulettaaksesi maton..."
+      }
+    }
+  },
+  "feedback": {
+    "button": "Anna palautetta",
+    "title": "Palaute",
+    "description": "Auta meitä kehittämään palvelua arvioimalla seuraavat kohdat.",
+    "submitting": "Lähetetään...",
+    "submit": "Lähetä palaute",
+    "successMessage": "Palaute lähetetty onnistuneesti!",
+    "errorMessage": "Virhe palautteen lähetyksessä.",
+    "fields": {
+      "aiRecognition": {
+        "label": "Tekoäly tunnisti mattotyypin oikein"
+      },
+      "careInstructionClarity": {
+        "label": "Hoito-ohjeiden selkeys (1-10)"
+      },
+      "appUsability": {
+        "label": "Sovelluksen käytettävyys (1-10)"
+      },
+      "overallRating": {
+        "label": "Yleisarvosana (1-10)"
+      },
+      "comment": {
+        "label": "Lisäkommentit tai ehdotukset"
+      }
+    }
+  }
+}

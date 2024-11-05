@@ -16,6 +16,7 @@ import { CareGuidesProps, RugTypes } from "@/lib/definitions";
 import { rugPhotos } from "@/lib/photos";
 import { AnimatePresence, motion } from "framer-motion";
 import { Play } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import FeedbackForm from "./FeedBackForm";
@@ -38,7 +39,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { 
+    transition: {
       duration: 0.5,
       ease: "easeOut",
     },
@@ -65,6 +66,7 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
 };
 
 export default function CareGuides({ careGuides }: CareGuidesProps) {
+  const t = useTranslations("care");
   const rugType = careGuides[0].rugType;
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const videoId = "HP9bhCjC4Kw"; // Replace with your actual YouTube video ID
@@ -83,13 +85,13 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         className="text-2xl sm:text-3xl font-light text-gray-800 mb-4 sm:mb-6 text-center"
         variants={itemVariants}
       >
-        Maintenance Guide
+        {t("title")}
       </motion.h1>
 
       {shouldShowVideo && (
         <motion.div className="mb-8 sm:mb-12" variants={itemVariants}>
           <h2 className="text-lg sm:text-xl font-light text-gray-700 mb-3 sm:mb-4 text-center">
-            Watch Our Care Guide Video for Paper Yarn Rugs
+            {t("videoTitle")}
           </h2>
           <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
             <DialogTrigger asChild>
@@ -128,9 +130,8 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 text-center"
         variants={itemVariants}
       >
-        Select a rug type below to view its specific care instructions.
+        {t("selectText")}
       </motion.p>
-
       <AnimatePresence>
         {careGuides.map((careGuide, index) => {
           const rugType = careGuide.rugType;
@@ -148,7 +149,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
               className="mb-6 sm:mb-8"
             >
               <h2 className="text-xl sm:text-2xl font-medium text-gray-800 mb-3 sm:mb-4">
-                {formatRugTypeName(rugType)}
+                {t(`rugTypes.${rugType}`)}
               </h2>
               <Card className="border-none shadow-sm">
                 <CardContent className="p-4">
@@ -159,6 +160,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                           const photo = multiPhotosRug?.photos[idx];
                           let title, content;
 
+                          // Käytetään alkuperäistä jakologiikkaa
                           if (instruction.includes(":")) {
                             [title, content] = instruction.split(/:(.*)/);
                           } else {
@@ -180,7 +182,7 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
                                   {photo && (
                                     <div className="mb-3 sm:mb-4">
                                       <Image
-                                        alt={`${title.trim()} for ${formatRugTypeName(rugType)}`}
+                                        alt={`${title.trim()} for ${t(`rugTypes.${rugType}`)}`}
                                         src={photo.imageSrc}
                                         height={400}
                                         width={400}
@@ -209,11 +211,10 @@ export default function CareGuides({ careGuides }: CareGuidesProps) {
         variants={itemVariants}
       >
         <motion.p className="text-lg text-gray-700 font-medium">
-          Your feedback is valuable to us!
+          {t("feedback.title")}
         </motion.p>
         <motion.p className="text-sm text-gray-600">
-          Help us improve our care guides and application by sharing your
-          thoughts.
+          {t("feedback.description")}
         </motion.p>
         <FeedbackForm rugType={rugType} />
       </motion.div>

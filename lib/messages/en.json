@@ -1,0 +1,54 @@
+{
+  "care": {
+    "title": "Maintenance Guide",
+    "videoTitle": "Watch Our Care Guide Video for Paper Yarn Rugs",
+    "selectText": "Select a rug type below to view its specific care instructions",
+    "feedback": {
+      "title": "Your feedback is valuable to us!",
+      "description": "Help us improve our care guides by sharing your thoughts."
+    },
+    "rugTypes": {
+      "paperYarnRugs": "Paper Yarn Rugs",
+      "handKnottedRugs": "Hand Knotted Rugs",
+      "tuftedRugs": "Tufted Rugs",
+      "outdoorRugs": "Outdoor Rugs",
+      "cottonPaperYarnRugs": "Cotton Paper Yarn Rugs",
+      "woolPaperYarnRugs": "Wool Paper Yarn Rugs"
+    },
+    "instructions": {
+      "paperYarnRugs": {
+        "1": "Regular care: Vacuum cleaning is sufficient for everyday care of a Woodnotes carpet...",
+        "2": "Spot cleaning: Remove stains or spots immediately...",
+        "3": "Deep cleaning: The best way to wash the paper yarn carpet...",
+        "4": "Maintenance: Store the rug rolled evenly...",
+        "5": "Additional care: To air your carpet..."
+      }
+    }
+  },
+  "feedback": {
+    "button": "Provide Feedback",
+    "title": "Feedback",
+    "description": "Please rate the following aspects to help us improve.",
+    "submitting": "Submitting...",
+    "submit": "Submit Feedback",
+    "successMessage": "Feedback submitted successfully!",
+    "errorMessage": "An error occurred while submitting feedback.",
+    "fields": {
+      "aiRecognition": {
+        "label": "AI correctly recognized the rug type"
+      },
+      "careInstructionClarity": {
+        "label": "Clarity of care instructions (1-10)"
+      },
+      "appUsability": {
+        "label": "Ease of using the application (1-10)"
+      },
+      "overallRating": {
+        "label": "Overall satisfaction (1-10)"
+      },
+      "comment": {
+        "label": "Additional comments or suggestions"
+      }
+    }
+  }
+}
