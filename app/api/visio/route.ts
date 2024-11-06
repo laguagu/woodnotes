@@ -136,7 +136,8 @@ export async function POST(req: Request, res: Response) {
       image_url,
       detailLevel = "high",
       saveProcessedImage = false,
-      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotest-84-kuvaa-uusi:AIAHrRYr",
+      modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotes-6-11-2024:AQbfjWX4",
+      // modelVersion = "ft:gpt-4o-2024-08-06:personal:woodnotes-dataset2-marraskuus:AQa7BrSA",
     } = await req.json();
 
     if (!image_url || typeof image_url !== "string") {
@@ -154,11 +155,13 @@ export async function POST(req: Request, res: Response) {
 
     console.log("Kutsuttu tekoälyä aika:", new Date().toLocaleString());
 
-    // const inputTokens = calculateTokens(width, height, detailLevel as DetailLevel);
-    // const pricing = pricingInfo[modelVersion as GPT4oVersion];
+    // Lisätään Promise.race timeoutin kanssa
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("API call timeout")), 30000);
+    });
 
-    const response = await openai.chat.completions.create({
-      model: "ft:gpt-4o-2024-08-06:personal:woodnotest-84-kuvaa-uusi:AIAHrRYr",
+    const apiCallPromise = openai.chat.completions.create({
+      model: modelVersion,
       // model: "gpt-4o-2024-08-06",
       messages: [
         {
@@ -211,7 +214,13 @@ export async function POST(req: Request, res: Response) {
         },
       ],
       response_format: { type: "json_object" },
+      temperature: 0,
     });
+
+    const response = (await Promise.race([
+      apiCallPromise,
+      timeoutPromise,
+    ])) as OpenAI.Chat.Completions.ChatCompletion;
 
     let detectedRugTypes: CarpetTypesType;
 
@@ -238,9 +247,23 @@ export async function POST(req: Request, res: Response) {
     return NextResponse.json(detectedRugTypes);
   } catch (error) {
     console.error("Error in POST /api/visio/", error);
-    return Response.json({
-      message: "Internal server error",
-      status: 500,
-    });
+
+    // Tarkempi virheen käsittely
+    if (error instanceof Error) {
+      if (error.message === "API call timeout") {
+        return NextResponse.json(
+          { message: "Request timeout - model response took too long" },
+          { status: 504 },
+        );
+      }
+    }
+
+    return NextResponse.json(
+      {
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    );
   }
 }
