@@ -15,7 +15,6 @@ function Page() {
     : [];
 
   const locale = useLocale();
-  console.log("locale", locale);
 
   // Valitse oikeat ohjeet kielen perusteella
   const instructions = locale === "fi" ? careInstructionsFi : careInstructions;

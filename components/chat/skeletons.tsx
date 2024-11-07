@@ -47,7 +47,7 @@ export function FormSkeleton() {
         <div className="item-c">
           <span className="text-2xl font-semibold text-center flex items-center justify-center gap-3">
             Identifying Rug Type
-            <ThreeDots height="56" width="56" color="" />
+            <div className="w-6 h-6 border-2 border-[#B4B4B4] border-t-[#4A4A4A] rounded-full animate-spin"></div>
           </span>
         </div>
       </div>

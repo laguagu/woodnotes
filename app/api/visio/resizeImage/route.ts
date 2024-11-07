@@ -36,17 +36,6 @@ export async function POST(req: NextRequest) {
     targetWidth = Math.floor(targetWidth / 2) * 2;
     targetHeight = Math.floor(targetHeight / 2) * 2;
 
-    console.log({
-      originalSize: {
-        width: originalWidth,
-        height: originalHeight,
-      },
-      processedSize: {
-        width: targetWidth,
-        height: targetHeight,
-      },
-    });
-
     const outputBuffer = await sharp(buffer)
       .resize({
         width: targetWidth,
