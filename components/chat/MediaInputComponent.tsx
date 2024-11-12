@@ -1,7 +1,10 @@
 "use client";
-import { CameraSkeleton, SmoothLoader } from "@/components/chat/skeletons";
+import { SmoothLoader } from "@/components/chat/skeletons";
 import { Button } from "@/components/ui/button";
-import { mediaInputVariants } from "@/lib/animation-config";
+import {
+  mediaInputVariants,
+  smoothTransitionVariants,
+} from "@/lib/animation-config";
 import { AnimatePresence, motion } from "framer-motion";
 import { Camera, Check, RefreshCw, Upload } from "lucide-react";
 import Image from "next/image";
@@ -22,7 +25,6 @@ export default function WoodnotesMediaInputComponent({
 }: WoodnotesMediaInputComponentProps) {
   const webcamRef = useRef<Webcam>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [loadingCamera, setLoadingCamera] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isWebcamReady, setIsWebcamReady] = useState(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
@@ -96,20 +98,24 @@ export default function WoodnotesMediaInputComponent({
   };
 
   const handleCameraStart = () => {
-    setLoadingCamera(false);
     setIsWebcamReady(true);
-    setIsCameraActive(true);
   };
 
   const handleCameraError = (error: any) => {
     console.error("Camera error:", error);
     setCameraError(error.message);
-    setLoadingCamera(false);
+    setIsCameraActive(false);
+    setIsWebcamReady(false);
   };
 
   const toggleCamera = () => {
-    setIsCameraActive(!isCameraActive);
-    setLoadingCamera(!isCameraActive);
+    if (isCameraActive) {
+      setIsCameraActive(false);
+      setIsWebcamReady(false); // Lisätään tämä takaisin
+    } else {
+      setIsWebcamReady(false); // Varmistetaan että skeleton näkyy ennen kameran latautumista
+      setIsCameraActive(true);
+    }
   };
 
   return (
@@ -137,18 +143,6 @@ export default function WoodnotesMediaInputComponent({
               Take a clear, well-lit photo of your rug, ensuring all key details
               are visible.
             </p>
-          </motion.div>
-        )}
-
-        {loadingCamera && !imageURL && (
-          <motion.div
-            key="camera-skeleton"
-            variants={mediaInputVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <CameraSkeleton />
           </motion.div>
         )}
 
@@ -196,33 +190,56 @@ export default function WoodnotesMediaInputComponent({
         {isCameraActive && !imageURL && (
           <motion.div
             key="webcam"
-            variants={mediaInputVariants}
+            variants={smoothTransitionVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
+            className="relative w-full"
           >
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              className={`rounded-lg ${isWebcamReady ? "" : "hidden"}`}
-              onUserMedia={handleCameraStart}
-              onUserMediaError={handleCameraError}
-            />
-            {isWebcamReady && (
-              <Button
-                onClick={captureImage}
-                variant="outline"
-                className="w-40 mt-4"
-              >
-                Take Photo
-                <Camera className="w-4 h-4 ml-2" />
-              </Button>
-            )}
+            <div
+              className={`transition-opacity duration-300 ${
+                isWebcamReady ? "hidden" : "block"
+              }`}
+            >
+              <div className="w-full">
+                <div className="flex flex-col space-y-4">
+                  <div className="h-[250px] sm:h-[370px] w-full rounded-lg bg-gray-100 animate-pulse" />
+                  <div className="flex justify-center">
+                    <div className="h-10 w-40 bg-gray-100 animate-pulse rounded" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`transition-opacity duration-300 ${
+                isWebcamReady ? "block" : "hidden"
+              }`}
+            >
+              <div className="w-full">
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  className="rounded-lg w-full h-auto max-h-[370px] object-cover"
+                  onUserMedia={handleCameraStart}
+                  onUserMediaError={handleCameraError}
+                  videoConstraints={videoConstraints}
+                />
+                <div className="flex justify-center mt-4">
+                  <Button
+                    onClick={captureImage}
+                    variant="outline"
+                    className="w-40"
+                  >
+                    Take Photo
+                    <Camera className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
-
         {imageURL && (
           <motion.div
             key="image-preview"
@@ -230,25 +247,38 @@ export default function WoodnotesMediaInputComponent({
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="bg-gray-50 p-6 rounded-lg shadow-sm"
+            className="bg-gray-50 p-4 sm:p-6 rounded-lg shadow-sm w-full"
           >
-            <Image
-              src={imageURL}
-              alt="Preview"
-              className="rounded-lg object-contain max-h-96 w-full"
-              width={640}
-              height={360}
-            />
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="max-w-[300px] sm:max-w-full mx-auto">
+              <Image
+                src={imageURL}
+                alt="Preview"
+                className="rounded-lg object-contain w-full h-auto"
+                width={640}
+                height={360}
+                style={{
+                  height: "auto",
+                  width: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+            <div className="flex flex-row justify-center gap-2 sm:gap-4 mt-4">
+              {" "}
+              {/* Muokattu nappien asettelua */}
               <Button
                 variant="outline"
                 onClick={() => sendImageToAI(imageURL)}
-                className="w-40"
+                className="w-full sm:w-40"
               >
                 Detect Rug
                 <Check className="w-4 h-4 ml-2" />
               </Button>
-              <Button variant="outline" onClick={resetStates} className="w-40">
+              <Button
+                variant="outline"
+                onClick={resetStates}
+                className="w-full sm:w-40"
+              >
                 New Picture
                 <RefreshCw className="w-4 h-4 ml-2" />
               </Button>
