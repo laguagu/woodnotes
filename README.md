@@ -41,8 +41,6 @@ BASIC_AUTH_PASSWORD="testpassword"
 npm run dev
 ```
 
-OpenAI API Docs: https://platform.openai.com/
-
 ## Julkaisu
 
 Rakenna Docker kontti ([Dockerfile](Dockerfile))
