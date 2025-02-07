@@ -42,7 +42,7 @@ Rakenna Docker kontti ([Dockerfile](Dockerfile))
 
 [app/api/visio/route.ts](app/api/visio/route.ts) vaatii OpenAI fine tuned mallin: "ft:gpt-4o-2024-08-06:personal:woodnotes-6-11-2024:AQbfjWX4".
 
-Mallia ei voi jakaa, joten tee oma fine-tunattu malli käyttäen [woodnotes_carpets_optimized.jsonl](woodnotes_carpets_optimized.jsonl) tiedoston datasettiä tai tee oma datasetti käyttäen [create-dataset.js](create-dataset.js) scriptiä.
+Mallia ei voi jakaa, joten tee oma fine-tuunattu malli käyttäen [woodnotes_carpets_optimized.jsonl](woodnotes_carpets_optimized.jsonl) tiedoston datasettiä tai tee oma datasetti käyttäen [create-dataset.js](create-dataset.js) scriptiä.
 
 Lisätietoa: https://platform.openai.com/docs/guides/fine-tuning 
 (Pohja mallina toimii gpt-4o)
