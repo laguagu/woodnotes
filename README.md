@@ -1,6 +1,6 @@
 # Care Instructor
 
-Tämä dokumentti kuvaa kuva-analyysipalvelumme kustannusrakennetta eri tarkkuustasoilla.
+Woodnotes Care Insturctor. Woodnotesin mattotyypin tunnistus kuvasta ja hoito-ohjeiden näyttäminen. 
 
 ## Aloitus
 
