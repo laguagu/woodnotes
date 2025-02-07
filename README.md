@@ -80,12 +80,3 @@ Esimerkki korkean tarkkuuden analyysista:
 | 1 000 / päivä    | $4.845          | ~4,50 €                |
 | 10 000 / päivä   | $48.45          | ~45,00 €               |
 | 100 000 / päivä  | $484.50         | ~450,00 €              |
-
-## Huomioita
-
-1. Kustannukset ovat arvioita ja voivat vaihdella riippuen analysoitavien kuvien monimutkaisuudesta ja koosta.
-2. Automaattinen tarkkuustaso tarjoaa hyvän tasapainon kustannusten ja analyysin tarkkuuden välillä useimmissa käyttötapauksissa.
-3. Korkeaa tarkkuustasoa suositellaan käytettäväksi vain silloin, kun tarvitaan erityisen yksityiskohtaista analyysia.
-4. Matala tarkkuustaso voi olla riittävä yksinkertaisille kuville tai kun nopeus ja kustannustehokkuus ovat etusijalla.
-
-Suosittelemme testaamaan eri tarkkuustasoja oman käyttötapauksenne mukaan optimaalisen tasapainon löytämiseksi kustannusten ja analyysin laadun välillä.
