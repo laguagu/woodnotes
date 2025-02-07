@@ -2,6 +2,51 @@
 
 Tämä dokumentti kuvaa kuva-analyysipalvelumme kustannusrakennetta eri tarkkuustasoilla.
 
+## Aloitus
+
+1. Kloonaa repositorio:
+```bash
+git clone https://github.com/laguagu/woodnotes
+cd woodnotes
+```
+
+2. Asenna riippuvuudet:
+```bash
+npm install
+```
+
+3. Kopioi [`.env.example`](.env.example) tiedosto nimellä `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+Tiedoston sisältö:
+```
+OPENAI_API_KEY=""
+# Autentikointi ei ole käytössä koska middleware on pois käytöstä "_" prefix merkillä 
+# Basic auth kovakoodattu username,password katso middleware.ts
+BASIC_AUTH_USER=testuser
+BASIC_AUTH_PASSWORD="testpassword"
+```
+
+4. Käynnistä kehityspalvelin:
+```bash
+npm run dev
+```
+
+## Julkaisu
+
+Rakenna Docker kontti ([Dockerfile](Dockerfile))
+
+## Tekoäly tunnistus
+
+[api/visio/route.ts](api/visio/route.ts) vaatii OpenAI fine tuned mallin: "ft:gpt-4o-2024-08-06:personal:woodnotes-6-11-2024:AQbfjWX4".
+
+Mallia ei voi jakaa, joten tee oma fine-tunattu malli käyttäen [woodnotes_carpets_optimized.jsonl](woodnotes_carpets_optimized.jsonl) tiedoston datasettiä tai tee oma datasetti käyttäen [create-dataset.js](create-dataset.js) scriptiä.
+
+Lisätietoa: https://platform.openai.com/docs/guides/fine-tuning 
+(Pohja mallina toimii gpt-4o)
+
 ## Kustannukset eri tarkkuustasoilla
 
 Olemme analysoineet kustannuksia kolmella eri tarkkuustasolla: matala (low), automaattinen (auto) ja korkea (high). Alla on erittely kustannuksista per kuva-analyysi:
