@@ -1,4 +1,4 @@
-# Kuva-analyysipalvelun kustannusrakenne
+# Care Instructor
 
 Tämä dokumentti kuvaa kuva-analyysipalvelumme kustannusrakennetta eri tarkkuustasoilla.
 
