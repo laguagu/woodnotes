@@ -34,9 +34,36 @@ OPENAI_API_KEY="sk-..."
 # Basic auth kovakoodattu username,password katso middleware.ts
 BASIC_AUTH_USER=testuser
 BASIC_AUTH_PASSWORD="testpassword"
+
+# Supabase konfiguraatio palautteelle
+NEXT_PUBLIC_SUPABASE_PRIVATE_KEY=""
+NEXT_PUBLIC_SUPABASE_URL=""
 ```
 
-5. Käynnistä kehityspalvelin:
+5. Luo Supabase-tietokanta palautteille (vapaaehtoinen):
+- Luo tili osoitteessa https://supabase.com
+- Luo uusi projekti
+- Kopioi projektin URL ja API-avain `.env.local` tiedostoon
+- Suorita seuraava SQL-lause Supabasen SQL-editorissa:
+
+```sql
+-- Drop the existing table if it exists
+DROP TABLE IF EXISTS woodnotes_feedback;
+
+-- Create the new table
+CREATE TABLE woodnotes_feedback (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  carpet_type TEXT NOT NULL,
+  ai_recognition_successful BOOLEAN NOT NULL,
+  care_instruction_clarity INTEGER NOT NULL,
+  app_usability INTEGER NOT NULL,
+  overall_rating INTEGER NOT NULL,
+  comment TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+6. Käynnistä kehityspalvelin:
 ```bash
 npm run dev
 ```
