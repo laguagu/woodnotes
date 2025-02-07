@@ -20,19 +20,28 @@ npm install
 cp .env.example .env.local
 ```
 
-Tiedoston sisältö:
+4. Hanki OpenAI API-avain:
+- Mene osoitteeseen https://platform.openai.com/api-keys
+- Kirjaudu sisään tai luo uusi tili
+- Klikkaa "Create new secret key"
+- Anna avaimelle kuvaava nimi (esim. "Woodnotes API")
+- Kopioi luotu API-avain talteen (avain näytetään vain kerran)
+- Lisää avain `.env.local` tiedostoon:
+
 ```
-OPENAI_API_KEY=""
+OPENAI_API_KEY="sk-..."
 # Autentikointi ei ole käytössä koska middleware on pois käytöstä "_" prefix merkillä 
 # Basic auth kovakoodattu username,password katso middleware.ts
 BASIC_AUTH_USER=testuser
 BASIC_AUTH_PASSWORD="testpassword"
 ```
 
-4. Käynnistä kehityspalvelin:
+5. Käynnistä kehityspalvelin:
 ```bash
 npm run dev
 ```
+
+OpenAI API Docs: https://platform.openai.com/
 
 ## Julkaisu
 
